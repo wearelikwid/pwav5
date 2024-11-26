@@ -1,132 +1,134 @@
-// Initialize Firebase Auth listener
-document.addEventListener('DOMContentLoaded', function() {
-    // Check authentication
-    firebase.auth().onAuthStateChanged(function(user) {
-        if (!user) {
-            window.location.href = 'auth.html';
-            return;
-        }
-        initializeForm();
-    });
-});
+// Global variables to track program structure
+let currentWeeks = 0;
 
-function initializeForm() {
+// Event Listeners
+document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('create-program-form');
     const durationInput = document.getElementById('program-duration');
+    
+    durationInput.addEventListener('change', handleDurationChange);
+    form.addEventListener('submit', handleFormSubmit);
+});
 
-    // Initialize with 1 week if no duration is set
-    if (durationInput.value) {
-        updateWeeks(parseInt(durationInput.value));
+// Handle program duration changes
+function handleDurationChange(event) {
+    const weeks = parseInt(event.target.value) || 0;
+    const weeksContainer = document.getElementById('program-weeks');
+    
+    // Clear existing weeks
+    weeksContainer.innerHTML = '';
+    currentWeeks = 0;
+
+    // Add new weeks
+    for (let i = 0; i < weeks; i++) {
+        addWeek();
     }
-
-    // Handle duration changes
-    durationInput.addEventListener('input', function() {
-        const duration = parseInt(this.value) || 0;
-        if (duration > 0) {
-            updateWeeks(duration);
-        } else {
-            document.getElementById('program-weeks').innerHTML = '';
-        }
-    });
-
-    // Handle form submission
-    form.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        await saveProgram();
-    });
 }
 
-async function saveProgram() {
+// Add a new week to the program
+function addWeek() {
+    currentWeeks++;
+    const weeksContainer = document.getElementById('program-weeks');
+    
+    const weekDiv = document.createElement('div');
+    weekDiv.className = 'week-container';
+    weekDiv.innerHTML = `
+        <div class="week-header">
+            <h3 class="week-title">Week ${currentWeeks}</h3>
+        </div>
+        <div class="week-days">
+            ${generateDaysHTML()}
+        </div>
+    `;
+    
+    weeksContainer.appendChild(weekDiv);
+}
+
+// Generate HTML for the days of the week
+function generateDaysHTML() {
+    const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    return daysOfWeek.map((day, index) => `
+        <div class="program-day">
+            <div class="day-header">
+                <h4 class="day-title">${day}</h4>
+            </div>
+            <div class="day-content">
+                <select class="workout-select" name="week${currentWeeks}day${index + 1}">
+                    <option value="">Rest Day</option>
+                    <option value="workout">Add Workout</option>
+                </select>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Handle form submission
+async function handleFormSubmit(event) {
+    event.preventDefault();
+    
+    // Check if user is authenticated
+    const user = firebase.auth().currentUser;
+    if (!user) {
+        alert('Please sign in to create a program');
+        window.location.href = 'auth.html';
+        return;
+    }
+
     try {
-        const user = firebase.auth().currentUser;
-        if (!user) throw new Error('User not authenticated');
-
         const programData = collectProgramData();
+        await saveProgramToFirebase(programData, user.uid);
         
-        // Save to Firestore
-        await firebase.firestore().collection('programs').add({
-            ...programData,
-            userId: user.uid,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-
         alert('Program created successfully!');
-        window.location.href = 'program.html';
+        window.location.href = 'programs.html';
     } catch (error) {
-        console.error('Error saving program:', error);
-        alert('Failed to save program. Please try again.');
+        console.error('Error creating program:', error);
+        alert('Failed to create program. Please try again.');
     }
 }
 
+// Collect all program data from the form
 function collectProgramData() {
     const programName = document.getElementById('program-name').value;
     const duration = parseInt(document.getElementById('program-duration').value);
+    
     const weeks = [];
-
-    // Collect data for each week
-    document.querySelectorAll('.program-week').forEach(weekElement => {
-        const weekNumber = parseInt(weekElement.getAttribute('data-week'));
+    const weekContainers = document.querySelectorAll('.week-container');
+    
+    weekContainers.forEach((weekContainer, weekIndex) => {
         const days = [];
-
-        // Collect data for each day
-        weekElement.querySelectorAll('.program-day').forEach(dayElement => {
-            const dayNumber = parseInt(dayElement.getAttribute('data-day'));
-            const workoutName = dayElement.querySelector('input[type="text"]').value;
-            const sections = [];
-
-            // Collect data for each section
-            dayElement.querySelectorAll('.workout-section').forEach(sectionElement => {
-                const sectionName = sectionElement.querySelector('.section-name').value;
-                const exercises = [];
-
-                // Collect data for each exercise in the section
-                sectionElement.querySelectorAll('.exercise-item').forEach(exerciseElement => {
-                    const inputs = exerciseElement.querySelectorAll('input, textarea');
-                    exercises.push({
-                        name: inputs[0].value,
-                        sets: parseInt(inputs[1].value),
-                        reps: parseInt(inputs[2].value),
-                        notes: inputs[3].value
-                    });
-                });
-
-                sections.push({
-                    name: sectionName,
-                    exercises: exercises
-                });
-            });
-
+        const daySelects = weekContainer.querySelectorAll('.workout-select');
+        
+        daySelects.forEach((select) => {
             days.push({
-                dayNumber: dayNumber,
-                workoutName: workoutName,
-                sections: sections
+                workoutType: select.value,
+                workout: select.value === 'workout' ? {
+                    name: 'Default Workout',
+                    sections: []
+                } : null
             });
         });
-
-        weeks.push({
-            weekNumber: weekNumber,
-            days: days
-        });
+        
+        weeks.push({ days });
     });
-
+    
     return {
         name: programName,
         duration: duration,
-        weeks: weeks
+        weeks: weeks,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
     };
 }
 
-function updateWeeks(numWeeks) {
-    const programWeeks = document.getElementById('program-weeks');
-    programWeeks.innerHTML = '';
-
-    for (let i = 0; i < numWeeks; i++) {
-        const weekNumber = i + 1;
-        const weekElement = createWeekElement(weekNumber);
-        programWeeks.appendChild(weekElement);
-    }
+// Save program data to Firebase
+async function saveProgramToFirebase(programData, userId) {
+    programData.userId = userId;
+    
+    await firebase.firestore()
+        .collection('programs')
+        .add(programData);
 }
 
-// Note: The createWeekElement, createDayElement, createSectionElement, 
-// and other helper functions are the same as in edit-program.js
-// They should be imported or shared between the files to maintain consistency
+// Helper function to generate unique IDs
+function generateUniqueId() {
+    return Math.random().toString(36).substr(2, 9);
+}

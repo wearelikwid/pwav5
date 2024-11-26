@@ -1,100 +1,80 @@
-/* Program Details Container */
-.program-overview {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-/* Program Stats */
-.program-stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    margin-bottom: 32px;
+/* Program Header Styles */
+.program-header {
     background: var(--card-background);
     padding: 20px;
     border-radius: 12px;
+    margin-bottom: 24px;
 }
 
-.stat {
+.program-title {
+    margin: 0 0 12px 0;
+    font-size: 1.8rem;
+    color: var(--text-primary);
+}
+
+.program-meta {
     display: flex;
-    flex-direction: column;
-    gap: 8px;
+    gap: 12px;
+    align-items: center;
 }
 
-.stat-label {
-    color: var(--text-secondary);
+.duration-badge {
+    background: var(--accent-color);
+    color: var(--text-primary);
+    padding: 4px 12px;
+    border-radius: 16px;
     font-size: 0.9rem;
 }
 
-.stat-value {
-    color: var(--text-primary);
-    font-size: 1.2rem;
-    font-weight: 500;
+/* Weeks Container */
+.weeks-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 }
 
-/* Week Cards */
+/* Week Card Styles */
 .week-card {
     background: var(--card-background);
     border-radius: 12px;
     padding: 20px;
-    margin-bottom: 24px;
 }
 
 .week-header {
-    color: var(--text-primary);
-    font-size: 1.2rem;
     margin-bottom: 16px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--border-color);
 }
 
-/* Day Items */
-.day-item {
-    background: var(--background-secondary);
+.week-title {
+    margin: 0;
+    font-size: 1.4rem;
+    color: var(--text-primary);
+}
+
+/* Days Container */
+.days-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+/* Day Card Styles */
+.day-card {
+    background: var(--background);
     border-radius: 8px;
     padding: 16px;
-    margin-bottom: 16px;
 }
 
 .day-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-bottom: 12px;
 }
 
-.day-header h4 {
-    color: var(--text-primary);
+.day-title {
     margin: 0;
-}
-
-.workout-name {
-    color: var(--accent-color);
-    font-size: 0.9rem;
-}
-
-.rest-day {
-    color: var(--text-secondary);
-    font-size: 0.9rem;
-}
-
-/* Sections */
-.section-item {
-    background: var(--background-tertiary);
-    border-radius: 8px;
-    padding: 16px;
-    margin-bottom: 12px;
-}
-
-.section-name {
+    font-size: 1.1rem;
     color: var(--text-primary);
-    font-size: 1rem;
-    margin-bottom: 12px;
-    font-weight: 500;
 }
 
-/* Exercises */
+/* Exercises List */
 .exercises-list {
     display: flex;
     flex-direction: column;
@@ -102,85 +82,83 @@
 }
 
 .exercise-item {
-    background: var(--background-quaternary);
-    border-radius: 6px;
-    padding: 12px;
-}
-
-.exercise-details {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 12px;
+    padding: 8px;
+    background: var(--card-background);
+    border-radius: 6px;
 }
 
 .exercise-name {
-    color: var(--text-primary);
-    font-size: 0.9rem;
+    font-weight: 500;
 }
 
-.exercise-specs {
+.exercise-details {
     color: var(--text-secondary);
     font-size: 0.9rem;
 }
 
-.exercise-notes {
-    color: var(--text-tertiary);
-    font-size: 0.8rem;
-    margin-top: 4px;
-    font-style: italic;
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
 }
 
-/* Program Actions */
-.program-actions {
+.modal-content {
+    background: var(--card-background);
+    padding: 24px;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 90%;
+}
+
+.modal-actions {
     display: flex;
-    gap: 16px;
+    gap: 12px;
+    justify-content: flex-end;
     margin-top: 24px;
-}
-
-.button {
-    padding: 12px 24px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: opacity 0.2s;
-}
-
-.button:hover {
-    opacity: 0.9;
-}
-
-.primary {
-    background: var(--accent-color);
-    color: white;
-}
-
-.secondary {
-    background: var(--background-secondary);
-    color: var(--text-primary);
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .program-stats {
+    .days-container {
         grid-template-columns: 1fr;
     }
 
-    .program-actions {
-        flex-direction: column;
+    .program-header {
+        margin: 16px;
     }
 
-    .button {
-        width: 100%;
+    .weeks-container {
+        padding: 16px;
     }
 }
 
-/* CSS Variables (in addition to existing ones) */
-:root {
-    --text-tertiary: rgba(255, 255, 255, 0.5);
-    --border-color: rgba(255, 255, 255, 0.1);
-    --background-secondary: rgba(255, 255, 255, 0.05);
-    --background-tertiary: rgba(255, 255, 255, 0.03);
-    --background-quaternary: rgba(255, 255, 255, 0.02);
+/* Button Styles */
+.icon-button {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background-color 0.3s;
+}
+
+.icon-button:hover {
+    background: var(--hover-background);
+}
+
+.header-actions {
+    display: flex;
+    gap: 12px;
 }

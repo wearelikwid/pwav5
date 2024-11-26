@@ -13,7 +13,7 @@
 
     <!-- Styles -->
     <link rel='stylesheet' href='styles/main.css'>
-    <link rel='stylesheet' href='styles/create-program.css'>
+    <link rel='stylesheet' href='styles/program.css'>
 </head>
 <body>
     <div class='container'>
@@ -35,7 +35,7 @@
                 </div>
 
                 <div id='program-weeks' class='program-weeks'>
-                    <!-- Weeks will be added here dynamically -->
+                    <!-- Weeks will be generated dynamically -->
                 </div>
 
                 <div class='form-actions'>
@@ -44,6 +44,54 @@
             </form>
         </main>
     </div>
+
+    <!-- Templates -->
+    <template id="week-template">
+        <div class="program-week" data-week="">
+            <h2 class="week-title">Week</h2>
+            <div class="week-days">
+                <!-- Days will be added here -->
+            </div>
+        </div>
+    </template>
+
+    <template id="day-template">
+        <div class="program-day" data-day="">
+            <h3 class="day-title">Day</h3>
+            <div class="form-group">
+                <input type="text" class="workout-name" placeholder="Workout Name">
+                <button type="button" class="button add-section">Add Section</button>
+            </div>
+            <div class="workout-sections">
+                <!-- Sections will be added here -->
+            </div>
+        </div>
+    </template>
+
+    <template id="section-template">
+        <div class="workout-section">
+            <div class="section-header">
+                <input type="text" class="section-name" placeholder="Section Name">
+                <button type="button" class="button remove-section">Remove Section</button>
+            </div>
+            <div class="exercises-list">
+                <!-- Exercises will be added here -->
+            </div>
+            <button type="button" class="button add-exercise">Add Exercise</button>
+        </div>
+    </template>
+
+    <template id="exercise-template">
+        <div class="exercise-item">
+            <div class="exercise-inputs">
+                <input type="text" class="exercise-name" placeholder="Exercise Name" required>
+                <input type="number" class="exercise-sets" placeholder="Sets" min="0">
+                <input type="number" class="exercise-reps" placeholder="Reps" min="0">
+                <textarea class="exercise-notes" placeholder="Notes"></textarea>
+            </div>
+            <button type="button" class="button remove-exercise">Remove</button>
+        </div>
+    </template>
 
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>

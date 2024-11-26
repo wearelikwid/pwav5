@@ -1,14 +1,12 @@
-// Initialize Firebase Auth listener
 document.addEventListener('DOMContentLoaded', () => {
-    // Check authentication state
     firebase.auth().onAuthStateChanged((user) => {
         if (user) {
-            // Get program ID from URL parameters
             const urlParams = new URLSearchParams(window.location.search);
             const programId = urlParams.get('id');
             
             if (programId) {
                 loadProgramDetails(programId);
+                setupEventListeners(programId);
             } else {
                 window.location.href = 'program.html';
             }
@@ -18,7 +16,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Load program details from Firestore
+function setupEventListeners(programId) {
+    const editButton = document.getElementById('editProgram');
+    if (editButton) {
+        editButton.addEventListener('click', () => {
+            window.location.href = `edit-program.html?id=${programId}`;
+        });
+    }
+}
+
 async function loadProgramDetails(programId) {
     try {
         const programDoc = await firebase.firestore()
@@ -39,13 +45,10 @@ async function loadProgramDetails(programId) {
     }
 }
 
-// Display program details in the UI
 function displayProgramDetails(program) {
-    // Update program stats
     document.getElementById('programName').textContent = program.name;
     document.getElementById('programDuration').textContent = `${program.duration} weeks`;
 
-    // Display weeks
     const programWeeksDiv = document.getElementById('programWeeks');
     let weeksHTML = '';
 
@@ -55,14 +58,7 @@ function displayProgramDetails(program) {
                 <div class="week-card">
                     <h3 class="week-header">Week ${weekIndex + 1}</h3>
                     <div class="week-days">
-                        ${week.days.map((day, dayIndex) => `
-                            <div class="day-item">
-                                <div class="day-info">
-                                    <span class="day-name">Day ${dayIndex + 1}</span>
-                                    <span class="workout-name">${day.workout?.name || 'Rest Day'}</span>
-                                </div>
-                            </div>
-                        `).join('')}
+                        ${renderDays(week.days)}
                     </div>
                 </div>
             `;
@@ -72,46 +68,67 @@ function displayProgramDetails(program) {
     }
 
     programWeeksDiv.innerHTML = weeksHTML;
-
-    // Add event listeners
-    const startButton = document.getElementById('startProgram');
-    if (startButton) {
-        startButton.addEventListener('click', () => startProgram(program.id));
-    }
 }
 
-// Handle starting a program
+function renderDays(days) {
+    return days.map((day, dayIndex) => `
+        <div class="day-item">
+            <div class="day-header">
+                <h4>Day ${dayIndex + 1}</h4>
+                ${day.workout ? `<span class="workout-name">${day.workout.name}</span>` : '<span class="rest-day">Rest Day</span>'}
+            </div>
+            ${renderSections(day.workout?.sections || [])}
+        </div>
+    `).join('');
+}
+
+function renderSections(sections) {
+    if (!sections.length) return '';
+    
+    return `
+        <div class="sections-container">
+            ${sections.map(section => `
+                <div class="section-item">
+                    <h5 class="section-name">${section.name}</h5>
+                    ${renderExercises(section.exercises)}
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+
+function renderExercises(exercises) {
+    if (!exercises || !exercises.length) return '';
+
+    return `
+        <div class="exercises-list">
+            ${exercises.map(exercise => `
+                <div class="exercise-item">
+                    <div class="exercise-details">
+                        <span class="exercise-name">${exercise.name}</span>
+                        <span class="exercise-specs">
+                            ${exercise.sets}×${exercise.reps}
+                            ${exercise.notes ? `<span class="exercise-notes">${exercise.notes}</span>` : ''}
+                        </span>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+
 async function startProgram(programId) {
     try {
         const user = firebase.auth().currentUser;
         if (!user) {
-            alert('Please sign in first');
-            window.location.href = 'auth.html';
+            alert('Please sign in to start the program');
             return;
         }
 
-        // Show loading message
-        alert('Starting program...');
-
-        // Create new userProgram document
-        await firebase.firestore().collection('userPrograms').add({
-            userId: user.uid,
-            programId: programId,
-            startDate: firebase.firestore.FieldValue.serverTimestamp(),
-            status: 'active',
-            currentWeek: 1,
-            currentDay: 1,
-            progress: {
-                completedWorkouts: 0,
-                lastWorkoutDate: null
-            }
-        });
-
-        // Success message and redirect
-        alert('Program started successfully!');
-        window.location.href = `workout.html?programId=${programId}`;
+        // Add program start logic here
+        alert('Program started! Implementation pending.');
     } catch (error) {
         console.error('Error starting program:', error);
-        alert('Failed to start program. Please try again.');
+        alert('Error starting program. Please try again.');
     }
 }

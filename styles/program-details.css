@@ -1,11 +1,16 @@
+/* Program Details Container */
 .program-overview {
+    max-width: 960px;
+    margin: 0 auto;
     padding: 20px;
 }
 
+/* Program Stats */
 .program-stats {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
-    margin-bottom: 30px;
+    margin-bottom: 32px;
     background: var(--card-background);
     padding: 20px;
     border-radius: 12px;
@@ -14,82 +19,168 @@
 .stat {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 8px;
 }
 
 .stat-label {
-    font-size: 0.9rem;
     color: var(--text-secondary);
+    font-size: 0.9rem;
 }
 
 .stat-value {
+    color: var(--text-primary);
     font-size: 1.2rem;
     font-weight: 500;
-    color: var(--text-color);
 }
 
-.program-weeks {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
+/* Week Cards */
 .week-card {
     background: var(--card-background);
     border-radius: 12px;
     padding: 20px;
+    margin-bottom: 24px;
 }
 
 .week-header {
-    margin-bottom: 15px;
-    font-size: 1.1rem;
-    color: var(--text-color);
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
 }
 
-.week-days {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
+/* Day Items */
 .day-item {
+    background: var(--background-secondary);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.day-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
+    margin-bottom: 12px;
 }
 
-.day-info {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.day-name {
-    font-weight: 500;
-    color: var(--text-color);
+.day-header h4 {
+    color: var(--text-primary);
+    margin: 0;
 }
 
 .workout-name {
+    color: var(--accent-color);
     font-size: 0.9rem;
+}
+
+.rest-day {
     color: var(--text-secondary);
+    font-size: 0.9rem;
 }
 
-.program-actions {
-    margin-top: 30px;
-    padding: 20px;
+/* Sections */
+.section-item {
+    background: var(--background-tertiary);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+.section-name {
+    color: var(--text-primary);
+    font-size: 1rem;
+    margin-bottom: 12px;
+    font-weight: 500;
+}
+
+/* Exercises */
+.exercises-list {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    gap: 8px;
 }
 
-.program-actions .button {
-    min-width: 200px;
+.exercise-item {
+    background: var(--background-quaternary);
+    border-radius: 6px;
+    padding: 12px;
 }
 
+.exercise-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.exercise-name {
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.exercise-specs {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.exercise-notes {
+    color: var(--text-tertiary);
+    font-size: 0.8rem;
+    margin-top: 4px;
+    font-style: italic;
+}
+
+/* Program Actions */
+.program-actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 24px;
+}
+
+.button {
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: opacity 0.2s;
+}
+
+.button:hover {
+    opacity: 0.9;
+}
+
+.primary {
+    background: var(--accent-color);
+    color: white;
+}
+
+.secondary {
+    background: var(--background-secondary);
+    color: var(--text-primary);
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
     .program-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .program-actions {
         flex-direction: column;
     }
+
+    .button {
+        width: 100%;
+    }
+}
+
+/* CSS Variables (in addition to existing ones) */
+:root {
+    --text-tertiary: rgba(255, 255, 255, 0.5);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --background-secondary: rgba(255, 255, 255, 0.05);
+    --background-tertiary: rgba(255, 255, 255, 0.03);
+    --background-quaternary: rgba(255, 255, 255, 0.02);
 }

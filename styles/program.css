@@ -1,0 +1,87 @@
+/* Main container */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Programs list */
+.programs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+/* Program card */
+.program-card {
+    background: var(--card-background);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s ease;
+}
+
+.program-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Program information */
+.program-info h2 {
+    margin: 0 0 8px 0;
+    font-size: 1.2rem;
+    color: var(--text-color);
+}
+
+.program-info p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Program actions */
+.program-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.program-actions .button {
+    padding: 8px 16px;
+}
+
+/* No programs message */
+.no-programs {
+    text-align: center;
+    color: var(--text-secondary);
+    margin: 32px 0;
+}
+
+/* Actions container */
+.actions {
+    text-align: center;
+    margin-top: 24px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .container {
+        padding: 16px;
+    }
+
+    .program-card {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+    }
+
+    .program-actions {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .program-actions .button {
+        flex: 1;
+    }
+}

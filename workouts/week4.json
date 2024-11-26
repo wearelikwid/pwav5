@@ -1,0 +1,403 @@
+{
+  "upperBody": {
+    "circuits": [
+      {
+        "name": "Circuit 1",
+        "exercises": [
+          {
+            "exercise": "Neutral pull up",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Dips",
+            "reps": "12-15",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 2",
+        "exercises": [
+          {
+            "exercise": "Row (TRX or barbell)",
+            "reps": "12",
+            "notes": "",
+            "weight": "50-60kg",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Weighted pushups",
+            "reps": "10 + max bodyweight",
+            "notes": "",
+            "weight": "+15kg",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 3",
+        "exercises": [
+          {
+            "exercise": "DB complex",
+            "reps": "",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Cable Facepull",
+            "reps": "12",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 4",
+        "exercises": [
+          {
+            "exercise": "Wide pullups",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Decline push ups",
+            "reps": "15",
+            "notes": "legs on bench",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 5",
+        "exercises": [
+          {
+            "exercise": "Chin ups",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "DB shoulder press or Pike push ups",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      }
+    ]
+  },
+  "lowerBody": {
+    "circuits": [
+      {
+        "name": "Circuit 1",
+        "exercises": [
+          {
+            "exercise": "Goblet squat",
+            "reps": "10",
+            "notes": "",
+            "weight": "12.5/16kg KB/DB",
+            "rounds": "3"
+          },
+          {
+            "exercise": "KB reverse lunges",
+            "reps": "10",
+            "notes": "1 is 1",
+            "weight": "",
+            "rounds": "3"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 2",
+        "exercises": [
+          {
+            "exercise": "Single leg hamstring curl machine",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Nordic quads",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 3",
+        "exercises": [
+          {
+            "exercise": "Back squat",
+            "reps": "15,12,10,8",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Romanian Deadlift",
+            "reps": "15,12,10,8",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 4",
+        "exercises": [
+          {
+            "exercise": "Zercher squat",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Hip thrusters",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 5",
+        "exercises": [
+          {
+            "exercise": "Step ups with bar",
+            "reps": "8",
+            "notes": "each leg",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 6",
+        "exercises": [
+          {
+            "exercise": "Single leg calf raises",
+            "reps": "12",
+            "notes": "",
+            "weight": "15kg DB",
+            "rounds": "4"
+          }
+        ]
+      }
+    ]
+  },
+  "core": {
+    "warmup": {
+      "exercises": [
+        {
+          "exercise": "Crunches",
+          "reps": "40",
+          "notes": "",
+          "weight": "",
+          "rounds": "2"
+        },
+        {
+          "exercise": "Side crunch right",
+          "reps": "30",
+          "notes": "",
+          "weight": "",
+          "rounds": "2"
+        },
+        {
+          "exercise": "Side crunch left",
+          "reps": "30",
+          "notes": "",
+          "weight": "",
+          "rounds": "2"
+        },
+        {
+          "exercise": "Bicycle crunches",
+          "reps": "20",
+          "notes": "",
+          "weight": "",
+          "rounds": "2"
+        },
+        {
+          "exercise": "Tuck situps",
+          "reps": "20",
+          "notes": "",
+          "weight": "",
+          "rounds": "2"
+        },
+        {
+          "exercise": "Leg raises",
+          "reps": "20",
+          "notes": "",
+          "weight": "",
+          "rounds": "2"
+        },
+        {
+          "exercise": "Reverse crunch (hip raises)",
+          "reps": "20",
+          "notes": "",
+          "weight": "",
+          "rounds": "2"
+        },
+        {
+          "exercise": "Low plank",
+          "reps": "1:30 minutes",
+          "notes": "",
+          "weight": "",
+          "rounds": "2"
+        }
+      ]
+    },
+    "circuit": {
+      "exercises": [
+        {
+          "exercise": "Back extensions",
+          "reps": "40 seconds on, 20 seconds off",
+          "notes": "",
+          "weight": "",
+          "rounds": "4"
+        },
+        {
+          "exercise": "V-ups",
+          "reps": "",
+          "notes": "",
+          "weight": "",
+          "rounds": "4"
+        },
+        {
+          "exercise": "Russian twists",
+          "reps": "",
+          "notes": "",
+          "weight": "",
+          "rounds": "4"
+        },
+        {
+          "exercise": "L-sit",
+          "reps": "",
+          "notes": "",
+          "weight": "",
+          "rounds": "4"
+        },
+        {
+          "exercise": "Leg raises on decline bench",
+          "reps": "",
+          "notes": "",
+          "weight": "",
+          "rounds": "4"
+        },
+        {
+          "exercise": "Roll outs",
+          "reps": "",
+          "notes": "",
+          "weight": "",
+          "rounds": "4"
+        },
+        {
+          "exercise": "Weighted situps with KB",
+          "reps": "",
+          "notes": "",
+          "weight": "",
+          "rounds": "4"
+        },
+        {
+          "exercise": "TRX high plank tuck pikes",
+          "reps": "",
+          "notes": "",
+          "weight": "",
+          "rounds": "4"
+        },
+        {
+          "exercise": "Hollow rocks",
+          "reps": "",
+          "notes": "",
+          "weight": "",
+          "rounds": ""
+        }
+      ]
+    }
+  },
+  "fullBody": {
+    "circuit": {
+      "exercises": [
+        {
+          "exercise": "Wall balls",
+          "reps": "40 sec work/20 sec rest",
+          "notes": "8 minute circuit",
+          "weight": "",
+          "rounds": "4"
+        },
+        {
+          "exercise": "KB swings",
+          "reps": "",
+          "notes": "",
+          "weight": "",
+          "rounds": "4"
+        },
+        {
+          "exercise": "Burpee pull-ups",
+          "reps": "",
+          "notes": "",
+          "weight": "",
+          "rounds": "4"
+        },
+        {
+          "exercise": "KB squat clean",
+          "reps": "",
+          "notes": "",
+          "weight": "",
+          "rounds": "4"
+        },
+        {
+          "exercise": "Slam ball",
+          "reps": "",
+          "notes": "",
+          "weight": "",
+          "rounds": "4"
+        },
+        {
+          "exercise": "DB double snatch",
+          "reps": "",
+          "notes": "",
+          "weight": "",
+          "rounds": "4"
+        },
+        {
+          "exercise": "Row machine",
+          "reps": "",
+          "notes": "",
+          "weight": "",
+          "rounds": "4"
+        },
+        {
+          "exercise": "Side kick through",
+          "reps": "",
+          "notes": "",
+          "weight": "",
+          "rounds": "4"
+        },
+        {
+          "exercise": "Jump rope",
+          "reps": "2 minutes",
+          "notes": "after each round",
+          "weight": "",
+          "rounds": ""
+        }
+      ]
+    }
+  }
+}

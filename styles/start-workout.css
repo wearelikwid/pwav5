@@ -1,0 +1,157 @@
+/* Root variables */
+:root {
+    --success-color: #4CAF50;
+}
+
+/* Main container styling */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header styling */
+.app-header {
+    margin-bottom: 32px;
+}
+
+.workout-type {
+    color: var(--secondary-text);
+    margin: 8px 0 0 0;
+    font-size: 1rem;
+}
+
+/* Sections styling */
+.workout-sections {
+    margin-bottom: 48px;
+}
+
+.workout-section {
+    background: var(--card-background);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.section-title {
+    color: var(--text-color);
+    margin: 0 0 20px 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+/* Exercise styling */
+.exercise-item {
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.exercise-item:last-child {
+    border-bottom: none;
+}
+
+.exercise-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.exercise-info {
+    flex: 1;
+}
+
+.exercise-name {
+    margin: 0 0 4px 0;
+    color: var(--text-color);
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.exercise-notes {
+    color: var(--secondary-text);
+    font-size: 0.9rem;
+    margin: 4px 0 0 0;
+}
+
+.exercise-counts {
+    text-align: right;
+    min-width: 100px;
+}
+
+.reps {
+    color: var(--text-color);
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.rounds {
+    color: var(--secondary-text);
+    font-size: 0.9rem;
+}
+
+/* Complete workout button */
+.complete-workout {
+    position: sticky;
+    bottom: 20px;
+    padding: 20px;
+    background: var(--background-color);
+    border-radius: 12px;
+    text-align: center;
+}
+
+.button.primary {
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    color: var(--text-color);
+    padding: 16px 32px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.button.primary:hover {
+    opacity: 0.9;
+}
+
+.button.primary.completed {
+    background: var(--success-color);
+    transform: scale(1.05);
+}
+
+.button.primary:disabled {
+    opacity: 0.8;
+    cursor: default;
+}
+
+/* Success animation */
+@keyframes successPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.success-animation {
+    animation: successPulse 0.5s ease-out;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .container {
+        padding: 16px;
+    }
+
+    .workout-section {
+        padding: 20px;
+    }
+
+    .exercise-main {
+        flex-direction: column;
+    }
+
+    .exercise-counts {
+        text-align: left;
+        margin-top: 8px;
+    }
+}

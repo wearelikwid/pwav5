@@ -1,0 +1,506 @@
+{
+  "upperBody": {
+    "circuits": [
+      {
+        "name": "Circuit 1",
+        "exercises": [
+          {
+            "exercise": "Incline barbell bench press",
+            "reps": "15-12-10-8",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Decline push ups",
+            "reps": "8-10",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 2",
+        "exercises": [
+          {
+            "exercise": "T-bar row",
+            "reps": "15-12-10-8",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Lat pull down narrow grip",
+            "reps": "15-12-10-8",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 3",
+        "exercises": [
+          {
+            "exercise": "Flat DB bench press",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "DB row",
+            "reps": "10",
+            "notes": "each side",
+            "weight": "",
+            "rounds": "3"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 4",
+        "exercises": [
+          {
+            "exercise": "Arnold shoulder press",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Zigzag bar bicep curls",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 5",
+        "exercises": [
+          {
+            "exercise": "DB Front raises",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "DB upright row",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 6",
+        "exercises": [
+          {
+            "exercise": "Cable shoulder side raises",
+            "reps": "12",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 7",
+        "exercises": [
+          {
+            "exercise": "Dips",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Tricep extension cable",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          }
+        ]
+      }
+    ]
+  },
+  "lowerBody": {
+    "circuits": [
+      {
+        "name": "Circuit 1",
+        "exercises": [
+          {
+            "exercise": "Ladder drills: in-out shuffle",
+            "reps": "30 sec",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Box step-ups with knee drive",
+            "reps": "10",
+            "notes": "each leg",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Plyo lunges with rotation",
+            "reps": "10",
+            "notes": "each side",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 2",
+        "exercises": [
+          {
+            "exercise": "Single leg RDLs",
+            "reps": "20",
+            "notes": "each leg",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Shrimp squats",
+            "reps": "15",
+            "notes": "each leg",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Single leg hops",
+            "reps": "30 sec",
+            "notes": "each leg",
+            "weight": "",
+            "rounds": "3"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 3",
+        "exercises": [
+          {
+            "exercise": "Sissy squats",
+            "reps": "12",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Nordic hamstring curls",
+            "reps": "15",
+            "notes": "or negatives",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Jump rope single leg alternating",
+            "reps": "20",
+            "notes": "10 each",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Wall sit with calf raises",
+            "reps": "30 sec",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      }
+    ]
+  },
+  "core": {
+    "circuits": [
+      {
+        "name": "Circuit 1",
+        "exercises": [
+          {
+            "exercise": "Situps",
+            "reps": "20",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Hollow rocks",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Russian twists",
+            "reps": "20",
+            "notes": "1 is 1",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Low plank",
+            "reps": "1 minute",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Toes to bar",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 2",
+        "exercises": [
+          {
+            "exercise": "Toe touches",
+            "reps": "30",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Bicycle crunches",
+            "reps": "20",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Wipers",
+            "reps": "10",
+            "notes": "2 as 1",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Side kick through",
+            "reps": "15",
+            "notes": "2 as 1",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Back extensions",
+            "reps": "20",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 3",
+        "exercises": [
+          {
+            "exercise": "Reverse crunch",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Flutter kicks",
+            "reps": "15",
+            "notes": "2 as 1",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Leg raises",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "High plank to superman plank",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "High plank knee to elbow",
+            "reps": "20",
+            "notes": "2 as 1",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 4",
+        "exercises": [
+          {
+            "exercise": "Side plank dips Right",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Side plank dips Left",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Side crunches Right",
+            "reps": "25",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Side crunches Left",
+            "reps": "25",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      }
+    ]
+  },
+  "fullBody": {
+    "warmup": {
+      "exercises": [
+        {
+          "exercise": "Rope",
+          "reps": "3 minutes",
+          "notes": "",
+          "weight": "",
+          "rounds": ""
+        },
+        {
+          "exercise": "Rower",
+          "reps": "1 minute",
+          "notes": "",
+          "weight": "",
+          "rounds": ""
+        },
+        {
+          "exercise": "Ski erg",
+          "reps": "1 minute",
+          "notes": "",
+          "weight": "",
+          "rounds": ""
+        }
+      ]
+    },
+    "circuits": [
+      {
+        "name": "Circuit 1",
+        "exercises": [
+          {
+            "exercise": "Deadlift",
+            "reps": "8",
+            "notes": "Barbell Complex",
+            "weight": "30-35-40kg",
+            "rounds": "3-4"
+          },
+          {
+            "exercise": "Squat clean",
+            "reps": "8",
+            "notes": "",
+            "weight": "30-35-40kg",
+            "rounds": "3-4"
+          },
+          {
+            "exercise": "Push press",
+            "reps": "8",
+            "notes": "",
+            "weight": "30-35-40kg",
+            "rounds": "3-4"
+          },
+          {
+            "exercise": "Back squat",
+            "reps": "8",
+            "notes": "",
+            "weight": "30-35-40kg",
+            "rounds": "3-4"
+          },
+          {
+            "exercise": "Reverse lunge",
+            "reps": "8",
+            "notes": "",
+            "weight": "30-35-40kg",
+            "rounds": "3-4"
+          },
+          {
+            "exercise": "Burpee over bar",
+            "reps": "8",
+            "notes": "",
+            "weight": "30-35-40kg",
+            "rounds": "3-4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 2",
+        "exercises": [
+          {
+            "exercise": "KB thrusters",
+            "reps": "10",
+            "notes": "",
+            "weight": "12kg each side",
+            "rounds": "4"
+          },
+          {
+            "exercise": "KB double swings",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "KB squat to upright row",
+            "reps": "12",
+            "notes": "",
+            "weight": "16/20kg",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 3",
+        "exercises": [
+          {
+            "exercise": "DB double snatches",
+            "reps": "12",
+            "notes": "",
+            "weight": "12.5/15kg",
+            "rounds": "4"
+          },
+          {
+            "exercise": "DB row",
+            "reps": "10",
+            "notes": "2 as 1",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Toes to bar or knee raises",
+            "reps": "8-10",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      }
+    ]
+  }
+}

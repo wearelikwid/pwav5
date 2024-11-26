@@ -1,0 +1,370 @@
+{
+  "upperBody": {
+    "circuits": [
+      {
+        "name": "Circuit 1",
+        "exercises": [
+          {
+            "exercise": "Archer pull-ups",
+            "reps": "10",
+            "notes": "5 each side",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Ring push-ups",
+            "reps": "12",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 2",
+        "exercises": [
+          {
+            "exercise": "L-sit pull-ups",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Pseudo planche push-ups",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 3",
+        "exercises": [
+          {
+            "exercise": "Commando pull-ups",
+            "reps": "10",
+            "notes": "5 each side",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Ring dips",
+            "reps": "12",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 4",
+        "exercises": [
+          {
+            "exercise": "Inverted rows",
+            "reps": "12",
+            "notes": "",
+            "weight": "+15kg",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Pike push-ups",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Face pulls",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      }
+    ]
+  },
+  "lowerBody": {
+    "circuits": [
+      {
+        "name": "Circuit 1",
+        "exercises": [
+          {
+            "exercise": "Mountain climbers",
+            "reps": "20",
+            "notes": "",
+            "weight": "",
+            "rounds": "2"
+          },
+          {
+            "exercise": "Jump rope high knees",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "2"
+          },
+          {
+            "exercise": "Burpee broad jumps",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "2"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 2",
+        "exercises": [
+          {
+            "exercise": "Elevated single-leg squats",
+            "reps": "12",
+            "notes": "each leg",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Explosive switch lunges",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Lateral lunge walks",
+            "reps": "20",
+            "notes": "each side",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 3",
+        "exercises": [
+          {
+            "exercise": "Single-leg stance with eyes closed",
+            "reps": "30 seconds",
+            "notes": "each leg",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Airborne lunges",
+            "reps": "10",
+            "notes": "each leg",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Curtsy lunges to side kicks",
+            "reps": "15",
+            "notes": "each side",
+            "weight": "",
+            "rounds": "3"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 4",
+        "exercises": [
+          {
+            "exercise": "Sprint in place",
+            "reps": "30 seconds",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Pogo jumps",
+            "reps": "30 seconds",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Scissor jumps",
+            "reps": "30 seconds",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      }
+    ]
+  },
+  "core": {
+    "circuits": [
+      {
+        "name": "Circuit 1",
+        "exercises": [
+          {
+            "exercise": "Renegade rows with push-up",
+            "reps": "40 seconds work/20 seconds rest",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Turkish get-up position holds",
+            "reps": "40 seconds work/20 seconds rest",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Swiss ball jackknife to pike",
+            "reps": "40 seconds work/20 seconds rest",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Bird dog crunch",
+            "reps": "40 seconds work/20 seconds rest",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Ring fallout to body saw",
+            "reps": "40 seconds work/20 seconds rest",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Hanging knee raise to twist",
+            "reps": "40 seconds work/20 seconds rest",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Plank to downward dog walks",
+            "reps": "40 seconds work/20 seconds rest",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 2",
+        "exercises": [
+          {
+            "exercise": "Medicine ball slams with rotation",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Mountain climbers",
+            "reps": "20",
+            "notes": "each side",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Back extension with twist",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Hollow body rocks",
+            "reps": "30 seconds",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          }
+        ]
+      }
+    ]
+  },
+  "fullBody": {
+    "circuits": [
+      {
+        "name": "Circuit 1",
+        "exercises": [
+          {
+            "exercise": "Wall balls",
+            "reps": "10",
+            "notes": "2 minutes for 16 minutes",
+            "weight": "",
+            "rounds": ""
+          },
+          {
+            "exercise": "Kettlebell swings",
+            "reps": "12",
+            "notes": "",
+            "weight": "",
+            "rounds": ""
+          },
+          {
+            "exercise": "Burpees",
+            "reps": "8",
+            "notes": "",
+            "weight": "",
+            "rounds": ""
+          }
+        ]
+      },
+      {
+        "name": "Circuit 2",
+        "exercises": [
+          {
+            "exercise": "Dumbbell renegade rows",
+            "reps": "12",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Goblet squats",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Push press",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 3",
+        "exercises": [
+          {
+            "exercise": "Jump rope",
+            "reps": "50",
+            "notes": "",
+            "weight": "",
+            "rounds": "1"
+          },
+          {
+            "exercise": "Russian twists",
+            "reps": "20",
+            "notes": "",
+            "weight": "",
+            "rounds": "1"
+          },
+          {
+            "exercise": "Up-downs",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "1"
+          }
+        ]
+      }
+    ]
+  }
+}

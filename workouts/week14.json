@@ -1,0 +1,349 @@
+{
+  "upperBody": {
+    "circuits": [
+      {
+        "name": "Circuit 1",
+        "exercises": [
+          {
+            "exercise": "Weighted dips",
+            "reps": "15,12,10,8",
+            "notes": "",
+            "weight": "+10kg",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Australian pull-ups",
+            "reps": "15,12,10,8",
+            "notes": "",
+            "weight": "+15kg", 
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 2",
+        "exercises": [
+          {
+            "exercise": "Ring push-ups",
+            "reps": "15,12,10,8",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Archer rows",
+            "reps": "15,12,10,8",
+            "notes": "alternating sides",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 3",
+        "exercises": [
+          {
+            "exercise": "Ring turned out support holds to dips",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Mixed grip chin-ups",
+            "reps": "10",
+            "notes": "switch grip every 5 reps",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Resistance band face pulls",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Dragon flags",
+            "reps": "10",
+            "notes": "negatives if needed",
+            "weight": "",
+            "rounds": "3"
+          }
+        ]
+      }
+    ]
+  },
+  "lowerBody": {
+    "circuits": [
+      {
+        "name": "Circuit 1",
+        "exercises": [
+          {
+            "exercise": "Bear crawl",
+            "reps": "20",
+            "notes": "meters",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Crab walk",
+            "reps": "20", 
+            "notes": "meters",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Duck walk",
+            "reps": "20",
+            "notes": "meters",
+            "weight": "",
+            "rounds": "3"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 2",
+        "exercises": [
+          {
+            "exercise": "Assisted pistol squats",
+            "reps": "8",
+            "notes": "each leg",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Jump lunges with hover",
+            "reps": "12",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Side plank leg lifts",
+            "reps": "15",
+            "notes": "each side",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 3",
+        "exercises": [
+          {
+            "exercise": "Box jump to backward step-down",
+            "reps": "10",
+            "notes": "each leg",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Lateral bounds with stick",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Quick feet ladder drills",
+            "reps": "20",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 4",
+        "exercises": [
+          {
+            "exercise": "Jump squats",
+            "reps": "100",
+            "notes": "",
+            "weight": "",
+            "rounds": "1"
+          },
+          {
+            "exercise": "Split squat jumps",
+            "reps": "50",
+            "notes": "each leg",
+            "weight": "",
+            "rounds": "1"
+          },
+          {
+            "exercise": "Burpee long jumps",
+            "reps": "25",
+            "notes": "",
+            "weight": "",
+            "rounds": "1"
+          }
+        ]
+      }
+    ]
+  },
+  "core": {
+    "circuits": [
+      {
+        "name": "Circuit 1",
+        "exercises": [
+          {
+            "exercise": "TRX body saw",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Alternating V-ups",
+            "reps": "20",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Cross-body mountain climbers",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 2",
+        "exercises": [
+          {
+            "exercise": "Swiss ball stir the pot",
+            "reps": "40 seconds",
+            "notes": "",
+            "weight": "",
+            "rounds": ""
+          },
+          {
+            "exercise": "Standing cable chops",
+            "reps": "15",
+            "notes": "each side",
+            "weight": "",
+            "rounds": ""
+          },
+          {
+            "exercise": "Reverse crunch to leg lower",
+            "reps": "20",
+            "notes": "",
+            "weight": "",
+            "rounds": ""
+          }
+        ]
+      },
+      {
+        "name": "Circuit 3",
+        "exercises": [
+          {
+            "exercise": "Single-arm farmer's walk",
+            "reps": "",
+            "notes": "each side",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Side plank with hip lift",
+            "reps": "15",
+            "notes": "each side",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Ab wheel with rotation",
+            "reps": "20",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Hanging straight leg raise to toe touch",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          }
+        ]
+      }
+    ]
+  },
+  "fullBody": {
+    "circuits": [
+      {
+        "name": "Circuit 1",
+        "exercises": [
+          {
+            "exercise": "Dumbbell clean and press",
+            "reps": "10-8-6-4-2",
+            "notes": "",
+            "weight": "",
+            "rounds": "5"
+          },
+          {
+            "exercise": "Burpees over dumbbells",
+            "reps": "10-8-6-4-2",
+            "notes": "",
+            "weight": "",
+            "rounds": "5"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 2",
+        "exercises": [
+          {
+            "exercise": "Kettlebell swings",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Push-ups",
+            "reps": "12",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Air Squats",
+            "reps": "20",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 3",
+        "exercises": [
+          {
+            "exercise": "Wall balls",
+            "reps": "1 minute",
+            "notes": "",
+            "weight": "",
+            "rounds": "1"
+          },
+          {
+            "exercise": "Mountain climbers",
+            "reps": "1 minute",
+            "notes": "",
+            "weight": "",
+            "rounds": "1"
+          },
+          {
+            "exercise": "Squat jumps",
+            "reps": "1 minute",
+            "notes": "",
+            "weight": "",
+            "rounds": "1"
+          }
+        ]
+      }
+    ]
+  }
+}

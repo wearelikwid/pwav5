@@ -1,0 +1,344 @@
+{
+  "upperBody": {
+    "circuits": [
+      {
+        "name": "Circuit 1",
+        "exercises": [
+          {
+            "exercise": "Weighted chin-ups",
+            "reps": "10",
+            "notes": "",
+            "weight": "10kg",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Decline diamond push-ups",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 2",
+        "exercises": [
+          {
+            "exercise": "Ring archer push-ups",
+            "reps": "12",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "One arm rows",
+            "reps": "10",
+            "notes": "each side",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 3",
+        "exercises": [
+          {
+            "exercise": "90-degree push-ups",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Explosive pull-ups",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Ring Y-raises",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Ring turned out dips",
+            "reps": "12",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          }
+        ]
+      }
+    ]
+  },
+  "lowerBody": {
+    "circuits": [
+      {
+        "name": "Circuit 1",
+        "exercises": [
+          {
+            "exercise": "Multi-directional hops",
+            "reps": "30 seconds",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Lateral shuffle with sprint",
+            "reps": "20",
+            "notes": "meters",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Backward run to forward sprint",
+            "reps": "1 minute",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 2",
+        "exercises": [
+          {
+            "exercise": "Drop squat to jump",
+            "reps": "8",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Alternating bound lunges",
+            "reps": "12",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "180-degree jump squats",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 3",
+        "exercises": [
+          {
+            "exercise": "Single-leg deadlift to backward hop",
+            "reps": "10",
+            "notes": "each",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Walking single-leg squat touches",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Lateral lunge to curtsy",
+            "reps": "10",
+            "notes": "each side",
+            "weight": "",
+            "rounds": "3"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 4",
+        "exercises": [
+          {
+            "exercise": "Jump squats",
+            "reps": "15",
+            "notes": "EMOM for 10 minutes",
+            "weight": "",
+            "rounds": ""
+          },
+          {
+            "exercise": "Split jumps",
+            "reps": "20",
+            "notes": "",
+            "weight": "",
+            "rounds": ""
+          }
+        ]
+      }
+    ]
+  },
+  "core": {
+    "circuits": [
+      {
+        "name": "Circuit 1",
+        "exercises": [
+          {
+            "exercise": "Ring support hold to RTO",
+            "reps": "",
+            "notes": "40 seconds on/20 seconds off",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Plank reach and pull",
+            "reps": "",
+            "notes": "40 seconds on/20 seconds off",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Figure-8 leg raises",
+            "reps": "",
+            "notes": "40 seconds on/20 seconds off",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Side plank with leg lift",
+            "reps": "",
+            "notes": "40 seconds on/20 seconds off",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Ab wheel knee tuck to rollout",
+            "reps": "",
+            "notes": "40 seconds on/20 seconds off",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Dragon flag",
+            "reps": "",
+            "notes": "40 seconds on/20 seconds off",
+            "weight": "",
+            "rounds": "3"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 2",
+        "exercises": [
+          {
+            "exercise": "Weighted decline reverse crunch",
+            "reps": "12",
+            "notes": "",
+            "weight": "5kg",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Single-arm plank with row",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Jefferson curl to hollow body",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Russian twist with press",
+            "reps": "20",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          }
+        ]
+      }
+    ]
+  },
+  "fullBody": {
+    "circuits": [
+      {
+        "name": "Circuit 1",
+        "exercises": [
+          {
+            "exercise": "Dumbbell thrusters",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "5"
+          },
+          {
+            "exercise": "Kettlebell swings",
+            "reps": "12",
+            "notes": "",
+            "weight": "",
+            "rounds": "5"
+          },
+          {
+            "exercise": "Burpees",
+            "reps": "8",
+            "notes": "",
+            "weight": "",
+            "rounds": "5"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 2",
+        "exercises": [
+          {
+            "exercise": "Ball slams",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Push-ups",
+            "reps": "12",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Walking lunges",
+            "reps": "20",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 3",
+        "exercises": [
+          {
+            "exercise": "Plank hold",
+            "reps": "1 minute",
+            "notes": "",
+            "weight": "",
+            "rounds": "1"
+          },
+          {
+            "exercise": "Jump rope",
+            "reps": "1 minute",
+            "notes": "",
+            "weight": "",
+            "rounds": "1"
+          },
+          {
+            "exercise": "Squat hold",
+            "reps": "1 minute",
+            "notes": "",
+            "weight": "",
+            "rounds": "1"
+          }
+        ]
+      }
+    ]
+  }
+}

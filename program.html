@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#242424">
+    <meta name="description" content="El Forma - Programs">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="El Forma">
+    <title>El Forma - Programs</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/program.css">
+</head>
+<body>
+    <div class="container">
+        <header class="app-header">
+            <a href="index.html" class="back-button">←</a>
+            <h1>Your Programs</h1>
+        </header>
+
+        <main>
+            <div id="programs-list" class="programs-list">
+                <!-- Programs will be inserted here dynamically -->
+            </div>
+
+            <div class="actions">
+                <a href="create-program.html" class="button primary">Create New Program</a>
+            </div>
+
+            <!-- Program Details Modal -->
+            <div id="program-details-modal" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 id="modal-program-name"></h2>
+                        <span class="close-modal">&times;</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="program-info">
+                            <p>Duration: <span id="modal-program-duration"></span></p>
+                            <p>Status: <span id="modal-program-status"></span></p>
+                        </div>
+                        <div class="modal-actions">
+                            <button id="view-program" class="button">View Details</button>
+                            <button id="edit-program" class="button">Edit Program</button>
+                            <button id="delete-program" class="button danger">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="scripts/firebase-config.js"></script>
+    <script src="scripts/program.js"></script>
+    <script src="scripts/user-programs.js"></script>
+</body>
+</html>

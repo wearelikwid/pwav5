@@ -1,0 +1,171 @@
+/* Main container */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Form styling */
+.workout-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Form group styling */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-color);
+    font-size: 0.9rem;
+}
+
+.form-group input,
+.form-group select,
+.section-type,
+.exercise-name,
+.exercise-notes {
+    width: 100%;
+    padding: 12px;
+    background: var(--card-background);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: var(--text-color);
+    font-size: 1rem;
+}
+
+/* Section styling */
+.workout-section {
+    background: var(--card-background);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+/* Section header */
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.section-type {
+    width: 150px;
+}
+
+/* Exercise styling */
+.exercise-item {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+}
+
+.exercise-item .form-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.exercise-item .form-group:last-child {
+    margin-bottom: 0;
+}
+
+/* Number fields */
+.number-fields {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    padding: 0 20px;
+}
+
+.number-fields input {
+    width: 80px;
+    padding: 12px;
+    background: var(--card-background);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: var(--text-color);
+    font-size: 1rem;
+}
+
+/* Button styling */
+.button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.button.primary {
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    color: var(--text-color);
+}
+
+.button.secondary {
+    background: var(--card-background);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-color);
+}
+
+.button.remove-section,
+.button.remove-exercise {
+    padding: 12px;
+    min-width: 40px;
+}
+
+/* Form actions */
+.form-actions {
+    margin-top: 32px;
+    text-align: center;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .container {
+        padding: 16px;
+    }
+
+    .workout-section {
+        padding: 16px;
+    }
+
+    .section-header {
+        gap: 8px;
+    }
+
+    .section-type {
+        flex: 1;
+        width: auto;
+    }
+
+    .exercise-item {
+        padding: 16px;
+    }
+
+    .exercise-item .form-group {
+        margin-bottom: 12px;
+        padding: 0 16px;
+    }
+
+    .number-fields {
+        padding: 0 16px;
+        gap: 12px;
+        margin-bottom: 12px;
+    }
+
+    .number-fields input {
+        flex: 1;
+        min-width: 0;
+        max-width: 100%;
+    }
+}

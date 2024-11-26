@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>El Forma - Sign In</title>
+    <link rel='stylesheet' href='styles/main.css'>
+    <link rel='stylesheet' href='styles/auth.css'>
+</head>
+<body>
+    <div class='container'>
+        <header class='app-header'>
+            <h1>Welcome to El Forma</h1>
+        </header>
+
+        <main class='auth-container'>
+            <div class='auth-box'>
+                <h2>Sign In</h2>
+                <button id='googleSignIn' class='button google-btn'>
+                    Sign in with Google
+                </button>
+                <div id='userDetails' class='user-details' style='display: none;'>
+                    <img id='userPhoto' class='user-photo' src='' alt='Profile Photo'>
+                    <p id='userName'></p>
+                    <p id='userEmail'></p>
+                    <button id='signOut' class='button'>Sign Out</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <!-- Your Firebase Config -->
+    <script src="scripts/firebase-config.js"></script>
+    <script src="scripts/auth.js"></script>
+</body>
+</html>

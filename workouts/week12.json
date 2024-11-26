@@ -1,0 +1,398 @@
+{
+  "upperBody": {
+    "circuits": [
+      {
+        "name": "Circuit 1",
+        "exercises": [
+          {
+            "exercise": "Wide pull ups",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Chin ups",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Narrow grip pull up",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Mixed grip pullup",
+            "reps": "8",
+            "notes": "4 each grip",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Head bangers",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 2",
+        "exercises": [
+          {
+            "exercise": "Straight bar dips",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Incline push ups",
+            "reps": "20",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Push ups",
+            "reps": "20",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Diamond push ups",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Hindu push ups",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Decline pushups",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Pike pushups",
+            "reps": "8",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      }
+    ]
+  },
+  "lowerBody": {
+    "circuits": [
+      {
+        "name": "Circuit 1",
+        "exercises": [
+          {
+            "exercise": "Broad jumps",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Tuck jumps",
+            "reps": "20",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Depth jumps",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 2",
+        "exercises": [
+          {
+            "exercise": "Bosu squats",
+            "reps": "30 seconds",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Single leg dead lift to backward lunge",
+            "reps": "10",
+            "notes": "each leg",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Walking high knees with pause",
+            "reps": "20",
+            "notes": "steps",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 3",
+        "exercises": [
+          {
+            "exercise": "Dragon pistol squats",
+            "reps": "12",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Natural glute-ham raises",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Sprint in place",
+            "reps": "20",
+            "notes": "high knees",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 4",
+        "exercises": [
+          {
+            "exercise": "Jump rope double unders",
+            "reps": "100",
+            "notes": "",
+            "weight": "",
+            "rounds": "1"
+          },
+          {
+            "exercise": "Calf raises",
+            "reps": "30",
+            "notes": "1 sec hold at top",
+            "weight": "",
+            "rounds": "1"
+          },
+          {
+            "exercise": "Hindu squats",
+            "reps": "20",
+            "notes": "",
+            "weight": "",
+            "rounds": "1"
+          }
+        ]
+      }
+    ]
+  },
+  "core": {
+    "circuits": [
+      {
+        "name": "Circuit 1",
+        "exercises": [
+          {
+            "exercise": "Dragon flag negatives",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Copenhagen plank",
+            "reps": "20",
+            "notes": "10 each side",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "TRX pike to knee tucks",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 2",
+        "exercises": [
+          {
+            "exercise": "Weighted plank with shoulder taps",
+            "reps": "40 seconds",
+            "notes": "",
+            "weight": "+10kg",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Hollow body to arch body rolls",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Dead bug progressions",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 3",
+        "exercises": [
+          {
+            "exercise": "Ring fallouts",
+            "reps": "20",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Side plank with rotation",
+            "reps": "15",
+            "notes": "each side",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "L-sit holds",
+            "reps": "30 seconds",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 4",
+        "exercises": [
+          {
+            "exercise": "Ab wheel rollouts",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Pallof press",
+            "reps": "20",
+            "notes": "each side",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Hanging windshield wipers",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      }
+    ]
+  },
+  "fullBody": {
+    "circuits": [
+      {
+        "name": "Circuit 1",
+        "exercises": [
+          {
+            "exercise": "KB clean and press",
+            "reps": "10",
+            "notes": "each side",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Burpees",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Kettlebell swings",
+            "reps": "20",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 2",
+        "exercises": [
+          {
+            "exercise": "Dumbbell thrusters",
+            "reps": "12",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Slam ball",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Push-ups",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 3",
+        "exercises": [
+          {
+            "exercise": "Push-ups",
+            "reps": "5",
+            "notes": "3 minutes AMRAP",
+            "weight": "",
+            "rounds": ""
+          },
+          {
+            "exercise": "Squats",
+            "reps": "10",
+            "notes": "3 minutes AMRAP",
+            "weight": "",
+            "rounds": ""
+          },
+          {
+            "exercise": "Mountain climbers",
+            "reps": "15",
+            "notes": "3 minutes AMRAP",
+            "weight": "",
+            "rounds": ""
+          }
+        ]
+      }
+    ]
+  }
+}

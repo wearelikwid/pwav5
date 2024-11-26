@@ -1,0 +1,380 @@
+{
+  "upperBody": {
+    "circuits": [
+      {
+        "name": "Circuit 1",
+        "exercises": [
+          {
+            "exercise": "Wide pull up",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Diamond push ups",
+            "reps": "12",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Ring/TRX row",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Straight bar dips",
+            "reps": "12",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Neutral grip pull up",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 2",
+        "exercises": [
+          {
+            "exercise": "Chin ups",
+            "reps": "8",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Push ups",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Face pull",
+            "reps": "12",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Dips",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "Mixed grip pull up",
+            "reps": "8",
+            "notes": "4 each grip",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 3",
+        "exercises": [
+          {
+            "exercise": "TRX T row",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "TRX Y row",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "TRX bicep curl",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          },
+          {
+            "exercise": "TRX face pull",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "4"
+          }
+        ]
+      }
+    ]
+  },
+  "lowerBody": {
+    "circuits": [
+      {
+        "name": "Circuit 1",
+        "exercises": [
+          {
+            "exercise": "Sumo squat",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Sumo deadlift",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 2",
+        "exercises": [
+          {
+            "exercise": "Back squats",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Walking lunges with bar",
+            "reps": "10",
+            "notes": "2 as 1",
+            "weight": "30kg",
+            "rounds": "3"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 3",
+        "exercises": [
+          {
+            "exercise": "Nordic hamstring curls",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Nordic quads",
+            "reps": "10",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 4",
+        "exercises": [
+          {
+            "exercise": "Single leg calf raises",
+            "reps": "15",
+            "notes": "",
+            "weight": "15kg",
+            "rounds": "3"
+          },
+          {
+            "exercise": "Achilles raises",
+            "reps": "15",
+            "notes": "",
+            "weight": "",
+            "rounds": "3"
+          }
+        ]
+      },
+      {
+        "name": "Circuit 5",
+        "exercises": [
+          {
+            "exercise": "Split squat each side",
+            "reps": "8",
+            "notes": "",
+            "weight": "8-10kg DBs",
+            "rounds": "3"
+          }
+        ]
+      }
+    ]
+  },
+  "core": {
+    "circuits": [
+      {
+        "name": "Circuit 1",
+        "exercises": [
+          {
+            "exercise": "High plank feet on box",
+            "reps": "40 seconds on, 20 seconds off",
+            "notes": "",
+            "weight": "+10kg",
+            "rounds": ""
+          },
+          {
+            "exercise": "DB V-sit shoulder press",
+            "reps": "",
+            "notes": "",
+            "weight": "",
+            "rounds": ""
+          },
+          {
+            "exercise": "TRX superman plank",
+            "reps": "",
+            "notes": "hands on TRX",
+            "weight": "",
+            "rounds": ""
+          }
+        ]
+      },
+      {
+        "name": "Circuit 2",
+        "exercises": [
+          {
+            "exercise": "Hanging knee raises with wall ball/DB",
+            "reps": "40 seconds on, 20 seconds off",
+            "notes": "",
+            "weight": "3-5kg",
+            "rounds": ""
+          },
+          {
+            "exercise": "KB Russian twists",
+            "reps": "",
+            "notes": "",
+            "weight": "",
+            "rounds": ""
+          },
+          {
+            "exercise": "TRX High plank tuck pike alternating knee to elbow",
+            "reps": "",
+            "notes": "",
+            "weight": "",
+            "rounds": ""
+          }
+        ]
+      },
+      {
+        "name": "Circuit 3",
+        "exercises": [
+          {
+            "exercise": "TRX low plank",
+            "reps": "40 seconds on, 20 seconds off",
+            "notes": "",
+            "weight": "+10kg",
+            "rounds": ""
+          },
+          {
+            "exercise": "Hollow body hold",
+            "reps": "",
+            "notes": "",
+            "weight": "",
+            "rounds": ""
+          },
+          {
+            "exercise": "Bicycle crunches",
+            "reps": "",
+            "notes": "",
+            "weight": "",
+            "rounds": ""
+          }
+        ]
+      },
+      {
+        "name": "Circuit 4",
+        "exercises": [
+          {
+            "exercise": "Tuck pike situps",
+            "reps": "40 seconds on, 20 seconds off",
+            "notes": "",
+            "weight": "",
+            "rounds": ""
+          },
+          {
+            "exercise": "Hollow rocks",
+            "reps": "",
+            "notes": "",
+            "weight": "",
+            "rounds": ""
+          },
+          {
+            "exercise": "Back extensions",
+            "reps": "",
+            "notes": "",
+            "weight": "",
+            "rounds": ""
+          }
+        ]
+      }
+    ]
+  },
+  "fullBody": {
+    "circuits": [
+      {
+        "name": "Circuit 1",
+        "exercises": [
+          {
+            "exercise": "Wall ball",
+            "reps": "150",
+            "notes": "Alternate between exercises when resting",
+            "weight": "9-10kg",
+            "rounds": ""
+          },
+          {
+            "exercise": "KB swings",
+            "reps": "150",
+            "notes": "",
+            "weight": "20-24kg",
+            "rounds": ""
+          }
+        ]
+      },
+      {
+        "name": "Circuit 2",
+        "exercises": [
+          {
+            "exercise": "KB thrusters",
+            "reps": "100",
+            "notes": "Alternate between exercises when resting",
+            "weight": "12kg",
+            "rounds": ""
+          },
+          {
+            "exercise": "Chest to ground burpees",
+            "reps": "100",
+            "notes": "",
+            "weight": "",
+            "rounds": ""
+          }
+        ]
+      },
+      {
+        "name": "Circuit 3",
+        "exercises": [
+          {
+            "exercise": "Slam ball",
+            "reps": "100",
+            "notes": "",
+            "weight": "35lb",
+            "rounds": ""
+          },
+          {
+            "exercise": "Side kick through",
+            "reps": "100",
+            "notes": "2 as 1",
+            "weight": "",
+            "rounds": ""
+          }
+        ]
+      }
+    ]
+  }
+}

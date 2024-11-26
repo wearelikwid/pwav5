@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <meta name='theme-color' content='#242424'>
+    <meta name='description' content='El Forma - Start Workout'>
+    <meta name='apple-mobile-web-app-capable' content='yes'>
+    <meta name='mobile-web-app-capable' content='yes'>
+    <meta name='apple-mobile-web-app-status-bar-style' content='black'>
+    <meta name='apple-mobile-web-app-title' content='El Forma'>
+    <title>El Forma - Start Workout</title>
+
+    <!-- Styles -->
+    <link rel='stylesheet' href='styles/main.css'>
+    <link rel='stylesheet' href='styles/start-workout.css'>
+</head>
+<body>
+    <div class='container'>
+        <header class='app-header'>
+            <a href='workouts.html' class='back-button'>←</a>
+            <h1 id='workout-name'>Workout Name</h1>
+            <p id='workout-type' class='workout-type'>Workout Type</p>
+        </header>
+
+        <main>
+            <div id='workout-sections' class='workout-sections'>
+                <!-- Sections will be loaded here dynamically -->
+            </div>
+
+            <div class='complete-workout'>
+                <button id='complete-workout' class='button primary'>Mark as Complete</button>
+            </div>
+        </main>
+    </div>
+
+    <!-- Section Template -->
+    <template id='section-template'>
+        <section class='workout-section'>
+            <h2 class='section-title'>Section Title</h2>
+            <div class='exercises-list'>
+                <!-- Exercises will be added here -->
+            </div>
+        </section>
+    </template>
+
+    <!-- Exercise Template -->
+    <template id='exercise-template'>
+        <div class='exercise-item'>
+            <div class='exercise-main'>
+                <div class='exercise-info'>
+                    <h3 class='exercise-name'>Exercise Name</h3>
+                    <p class='exercise-notes'>Notes</p>
+                </div>
+                <div class='exercise-counts'>
+                    <div class='reps'>10 reps</div>
+                    <div class='rounds'>4 rounds</div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <!-- Your Firebase Config -->
+    <script src="scripts/firebase-config.js"></script>
+    <script src='scripts/start-workout.js'></script>
+</body>
+</html>

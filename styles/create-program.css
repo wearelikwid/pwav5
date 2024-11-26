@@ -1,18 +1,11 @@
-/* Main container */
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-/* Form styling */
+/* Form Layout */
 .program-form {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
+    background: var(--card-background);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 32px;
 }
 
-/* Form group styling */
 .form-group {
     margin-bottom: 20px;
 }
@@ -21,52 +14,59 @@
     display: block;
     margin-bottom: 8px;
     color: var(--text-color);
-    font-size: 0.9rem;
     font-weight: 500;
 }
 
-.form-group input,
-.form-group select {
+.form-group input {
     width: 100%;
     padding: 12px;
-    background: var(--card-background);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
     color: var(--text-color);
     font-size: 1rem;
 }
 
-/* Program week styling */
-.program-week {
-    background: var(--card-background);
-    border-radius: 12px;
-    padding: 20px;
+.form-group input:focus {
+    outline: none;
+    border-color: var(--gradient-start);
+}
+
+/* Program Weeks Section */
+.program-weeks {
+    margin-top: 32px;
+}
+
+.week-container {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 16px;
     margin-bottom: 24px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .week-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 16px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.week-header h3 {
-    color: var(--text-color);
+.week-title {
     font-size: 1.2rem;
-    margin: 0;
+    font-weight: 500;
+    color: var(--text-color);
 }
 
+/* Days Section */
 .week-days {
-    margin-bottom: 16px;
+    display: grid;
+    gap: 16px;
 }
 
-/* Program day styling */
 .program-day {
-    background: rgba(0, 0, 0, 0.2);
+    background: var(--card-background);
     border-radius: 8px;
     padding: 16px;
-    margin-bottom: 16px;
 }
 
 .day-header {
@@ -76,93 +76,76 @@
     margin-bottom: 16px;
 }
 
-.day-header h4 {
-    margin: 0;
-    color: var(--text-color);
-    font-size: 1.1rem;
+.day-title {
+    font-weight: 500;
 }
 
-.day-content {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-.workout-name {
-    width: 100%;
-    padding: 10px;
-    background: var(--card-background);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 6px;
-    color: var(--text-color);
-}
-
-/* Exercise styling */
+/* Exercise Section */
 .exercise-list {
-    display: flex;
-    flex-direction: column;
+    display: grid;
     gap: 12px;
 }
 
 .exercise-item {
-    background: var(--card-background);
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 8px;
-    padding: 16px;
+    padding: 12px;
 }
 
-.exercise-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-}
-
-.exercise-header h5 {
-    margin: 0;
-    color: var(--text-color);
-    font-size: 1rem;
-}
-
-.exercise-details {
+.exercise-inputs {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 80px 80px;
     gap: 12px;
-    margin-top: 12px;
+    align-items: center;
 }
 
-.exercise-details input {
-    width: 100%;
-    padding: 8px;
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-    color: var(--text-color);
-}
-
-.exercise-notes {
-    grid-column: 1 / -1;
-    width: 100%;
-    padding: 8px;
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-    color: var(--text-color);
-    min-height: 60px;
-    resize: vertical;
-}
-
-/* Button styling */
-.button {
-    padding: 10px 20px;
+/* Buttons */
+.add-button, .remove-button {
+    padding: 8px 16px;
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.2s;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.add-button {
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    color: white;
+}
+
+.remove-button {
+    background: rgba(255, 59, 48, 0.1);
+    color: #ff3b30;
+}
+
+.add-button:hover {
+    opacity: 0.9;
+}
+
+.remove-button:hover {
+    background: rgba(255, 59, 48, 0.2);
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 32px;
+}
+
+.form-actions button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
 }
 
 .button.primary {
-    background: var(--primary-color);
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
     color: white;
 }
 
@@ -171,22 +154,13 @@
     color: var(--text-color);
 }
 
-.button.primary:hover {
-    background: var(--primary-color-dark);
-}
-
-.button.secondary:hover {
-    background: rgba(255, 255, 255, 0.15);
-}
-
-.remove-day,
-.remove-exercise {
-    padding: 6px 12px;
-    font-size: 0.9rem;
-}
-
-/* Form actions */
-.form-actions {
-    margin-top: 24px;
-    text-align: right;
+/* Responsive Design */
+@media (max-width: 600px) {
+    .exercise-inputs {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
 }

@@ -1,134 +1,146 @@
-document.addEventListener('DOMContentLoaded', () => {
-    firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-            const urlParams = new URLSearchParams(window.location.search);
-            const programId = urlParams.get('id');
-            
-            if (programId) {
-                loadProgramDetails(programId);
-                setupEventListeners(programId);
-            } else {
-                window.location.href = 'program.html';
-            }
-        } else {
+// Initialize Firebase Authentication and Firestore listeners
+document.addEventListener('DOMContentLoaded', function() {
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (!user) {
             window.location.href = 'auth.html';
+            return;
+        }
+        // Get program ID from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const programId = urlParams.get('id');
+        if (programId) {
+            loadProgramDetails(programId);
         }
     });
 });
 
-function setupEventListeners(programId) {
-    const editButton = document.getElementById('editProgram');
-    if (editButton) {
-        editButton.addEventListener('click', () => {
-            window.location.href = `edit-program.html?id=${programId}`;
-        });
-    }
-}
-
+// Load program details from Firestore
 async function loadProgramDetails(programId) {
     try {
+        const user = firebase.auth().currentUser;
         const programDoc = await firebase.firestore()
+            .collection('users')
+            .doc(user.uid)
             .collection('programs')
             .doc(programId)
             .get();
 
         if (programDoc.exists) {
-            const programData = { ...programDoc.data(), id: programId };
+            const programData = programDoc.data();
             displayProgramDetails(programData);
+            setupEditButton(programId);
         } else {
-            alert('Program not found');
-            window.location.href = 'program.html';
+            showError('Program not found');
         }
     } catch (error) {
-        console.error('Error loading program details:', error);
-        alert('Error loading program details. Please try again.');
+        console.error('Error loading program:', error);
+        showError('Failed to load program details');
     }
 }
 
+// Display program details in the UI
 function displayProgramDetails(program) {
+    // Set program name and duration
     document.getElementById('programName').textContent = program.name;
     document.getElementById('programDuration').textContent = `${program.duration} weeks`;
 
-    const programWeeksDiv = document.getElementById('programWeeks');
-    let weeksHTML = '';
+    // Get weeks container and week template
+    const weeksContainer = document.getElementById('programWeeks');
+    const weekTemplate = document.getElementById('week-template');
+    const dayTemplate = document.getElementById('day-template');
 
-    if (program.weeks && program.weeks.length > 0) {
-        program.weeks.forEach((week, weekIndex) => {
-            weeksHTML += `
-                <div class="week-card">
-                    <h3 class="week-header">Week ${weekIndex + 1}</h3>
-                    <div class="week-days">
-                        ${renderDays(week.days)}
-                    </div>
-                </div>
-            `;
+    weeksContainer.innerHTML = ''; // Clear existing content
+
+    // Create week elements
+    program.weeks.forEach((week, weekIndex) => {
+        const weekElement = weekTemplate.content.cloneNode(true);
+        
+        // Set week title
+        weekElement.querySelector('.week-title').textContent = `Week ${weekIndex + 1}`;
+        
+        const daysContainer = weekElement.querySelector('.days-container');
+
+        // Create day elements
+        week.days.forEach((day, dayIndex) => {
+            const dayElement = dayTemplate.content.cloneNode(true);
+            
+            // Set day title
+            dayElement.querySelector('.day-title').textContent = `Day ${dayIndex + 1}`;
+            
+            // Add exercises
+            const exercisesList = dayElement.querySelector('.exercises-list');
+            day.exercises.forEach(exercise => {
+                const exerciseItem = document.createElement('div');
+                exerciseItem.className = 'exercise-item';
+                exerciseItem.innerHTML = `
+                    <span class="exercise-name">${exercise.name}</span>
+                    <span class="exercise-details">${exercise.sets}×${exercise.reps}</span>
+                `;
+                exercisesList.appendChild(exerciseItem);
+            });
+
+            daysContainer.appendChild(dayElement);
         });
-    } else {
-        weeksHTML = '<p class="no-content">No workout weeks available</p>';
-    }
 
-    programWeeksDiv.innerHTML = weeksHTML;
+        weeksContainer.appendChild(weekElement);
+    });
 }
 
-function renderDays(days) {
-    return days.map((day, dayIndex) => `
-        <div class="day-item">
-            <div class="day-header">
-                <h4>Day ${dayIndex + 1}</h4>
-                ${day.workout ? `<span class="workout-name">${day.workout.name}</span>` : '<span class="rest-day">Rest Day</span>'}
-            </div>
-            ${renderSections(day.workout?.sections || [])}
-        </div>
-    `).join('');
+// Setup edit button functionality
+function setupEditButton(programId) {
+    const editButton = document.getElementById('editProgramBtn');
+    editButton.addEventListener('click', () => {
+        window.location.href = `edit-program.html?id=${programId}`;
+    });
 }
 
-function renderSections(sections) {
-    if (!sections.length) return '';
-    
-    return `
-        <div class="sections-container">
-            ${sections.map(section => `
-                <div class="section-item">
-                    <h5 class="section-name">${section.name}</h5>
-                    ${renderExercises(section.exercises)}
-                </div>
-            `).join('')}
+// Error handling function
+function showError(message) {
+    const container = document.querySelector('.program-content');
+    container.innerHTML = `
+        <div class="error-message">
+            <p>${message}</p>
+            <button onclick="window.location.href='programs.html'" class="button">
+                Return to Programs
+            </button>
         </div>
     `;
 }
 
-function renderExercises(exercises) {
-    if (!exercises || !exercises.length) return '';
+// Modal handling for delete confirmation
+const modal = document.getElementById('deleteModal');
+const confirmDeleteBtn = document.getElementById('confirmDelete');
+const cancelDeleteBtn = document.getElementById('cancelDelete');
 
-    return `
-        <div class="exercises-list">
-            ${exercises.map(exercise => `
-                <div class="exercise-item">
-                    <div class="exercise-details">
-                        <span class="exercise-name">${exercise.name}</span>
-                        <span class="exercise-specs">
-                            ${exercise.sets}×${exercise.reps}
-                            ${exercise.notes ? `<span class="exercise-notes">${exercise.notes}</span>` : ''}
-                        </span>
-                    </div>
-                </div>
-            `).join('')}
-        </div>
-    `;
+function showDeleteModal() {
+    modal.style.display = 'flex';
 }
 
-async function startProgram(programId) {
+function hideDeleteModal() {
+    modal.style.display = 'none';
+}
+
+async function deleteProgram(programId) {
     try {
         const user = firebase.auth().currentUser;
-        if (!user) {
-            alert('Please sign in to start the program');
-            return;
-        }
-
-        // Add program start logic here
-        alert('Program started! Implementation pending.');
+        await firebase.firestore()
+            .collection('users')
+            .doc(user.uid)
+            .collection('programs')
+            .doc(programId)
+            .delete();
+        
+        window.location.href = 'programs.html';
     } catch (error) {
-        console.error('Error starting program:', error);
-        alert('Error starting program. Please try again.');
+        console.error('Error deleting program:', error);
+        showError('Failed to delete program');
     }
 }
+
+// Setup modal event listeners
+cancelDeleteBtn.addEventListener('click', hideDeleteModal);
+window.onclick = function(event) {
+    if (event.target === modal) {
+        hideDeleteModal();
+    }
+};

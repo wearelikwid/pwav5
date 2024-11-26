@@ -1,87 +1,161 @@
-/* Main container */
-.container {
-    max-width: 800px;
+/* Program Form Styles */
+.program-form {
+    max-width: 960px;
     margin: 0 auto;
     padding: 20px;
 }
 
-/* Programs list */
-.programs-list {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    margin-bottom: 32px;
+.form-group {
+    margin-bottom: 20px;
 }
 
-/* Program card */
-.program-card {
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--input-background);
+    color: var(--text-primary);
+}
+
+/* Week and Day Styles */
+.program-week {
     background: var(--card-background);
     border-radius: 12px;
     padding: 20px;
+    margin-bottom: 24px;
+}
+
+.week-title {
+    margin-bottom: 16px;
+    color: var(--text-primary);
+    font-size: 1.4rem;
+}
+
+.program-day {
+    background: var(--background-secondary);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.day-title {
+    margin-bottom: 12px;
+    color: var(--text-primary);
+    font-size: 1.2rem;
+}
+
+/* Section Styles */
+.workout-section {
+    background: var(--background-tertiary);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.section-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: transform 0.2s ease;
+    margin-bottom: 12px;
 }
 
-.program-card:hover {
-    transform: translateY(-2px);
+.section-name {
+    flex-grow: 1;
+    margin-right: 12px;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: var(--input-background);
+    color: var(--text-primary);
 }
 
-/* Program information */
-.program-info h2 {
-    margin: 0 0 8px 0;
-    font-size: 1.2rem;
-    color: var(--text-color);
+/* Exercise Styles */
+.exercise-item {
+    background: var(--background-quaternary);
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 12px;
 }
 
-.program-info p {
-    margin: 0;
-    color: var(--text-secondary);
+.exercise-inputs {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.exercise-notes {
+    grid-column: 1 / -1;
+    resize: vertical;
+    min-height: 60px;
+}
+
+/* Button Styles */
+.button {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
     font-size: 0.9rem;
 }
 
-/* Program actions */
-.program-actions {
-    display: flex;
-    gap: 8px;
+.add-section {
+    background: var(--accent-color);
+    color: white;
 }
 
-.program-actions .button {
-    padding: 8px 16px;
+.remove-section {
+    background: var(--danger-color);
+    color: white;
 }
 
-/* No programs message */
-.no-programs {
-    text-align: center;
-    color: var(--text-secondary);
-    margin: 32px 0;
+.add-exercise {
+    background: var(--success-color);
+    color: white;
+    width: 100%;
+    margin-top: 8px;
 }
 
-/* Actions container */
-.actions {
-    text-align: center;
+.remove-exercise {
+    background: var(--danger-color);
+    color: white;
+}
+
+.form-actions {
     margin-top: 24px;
+    text-align: right;
 }
 
-/* Responsive design */
+/* Responsive Design */
 @media (max-width: 768px) {
-    .container {
-        padding: 16px;
+    .exercise-inputs {
+        grid-template-columns: 1fr;
     }
-
-    .program-card {
+    
+    .section-header {
         flex-direction: column;
-        gap: 16px;
-        text-align: center;
+        gap: 8px;
     }
+    
+    .section-name {
+        margin-right: 0;
+        margin-bottom: 8px;
+    }
+}
 
-    .program-actions {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .program-actions .button {
-        flex: 1;
-    }
+/* CSS Variables */
+:root {
+    --background-tertiary: rgba(255, 255, 255, 0.05);
+    --background-quaternary: rgba(255, 255, 255, 0.03);
+    --accent-color: #4CAF50;
+    --danger-color: #f44336;
+    --success-color: #2196F3;
 }

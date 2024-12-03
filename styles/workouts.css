@@ -12,6 +12,34 @@
     margin: 0 auto;
 }
 
+/* Tabs styling */
+.tabs-container {
+    margin-bottom: 24px;
+}
+
+.tabs {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 12px;
+}
+
+.tab {
+    padding: 8px 16px;
+    border-radius: 6px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tab.active {
+    background: var(--button-gradient);
+    border-color: transparent;
+}
+
 /* Grid layout for workout cards */
 .workouts-grid {
     display: grid;
@@ -68,11 +96,21 @@
     display: flex;
     align-items: center;
     gap: 12px;
+    flex-wrap: wrap;
 }
 
+/* Status badges */
 .completion-status {
     color: var(--success-color);
     font-size: 0.9rem;
+}
+
+.visibility-badge {
+    background: rgba(99, 102, 241, 0.2);
+    color: #818cf8;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
 }
 
 /* Card actions */
@@ -127,6 +165,21 @@
 
 .empty-state p {
     margin-bottom: 24px;
+}
+
+/* Loading spinner */
+.spinner {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 16px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    border-top-color: var(--text-color);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
 
 /* Modal styles */
@@ -188,5 +241,14 @@
     .workout-actions button {
         flex: 1;
         min-width: 80px;
+    }
+
+    .tabs {
+        overflow-x: auto;
+        padding-bottom: 8px;
+    }
+
+    .tab {
+        white-space: nowrap;
     }
 }

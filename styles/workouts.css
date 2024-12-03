@@ -3,9 +3,9 @@
     --success-color: #4CAF50;
     --danger-color: #ff4444;
     --button-gradient: linear-gradient(135deg, #6366f1, #4f46e5);
-    --tab-border: rgba(255, 255, 255, 0.1);
     --badge-bg: rgba(99, 102, 241, 0.2);
     --badge-text: #818cf8;
+    --tab-border: rgba(255, 255, 255, 0.1);
 }
 
 /* Workouts page layout */
@@ -52,6 +52,20 @@
     border-color: transparent;
 }
 
+/* Badge styling */
+.badge {
+    background: var(--badge-bg);
+    color: var(--badge-text);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    margin-left: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+}
+
 /* Grid layout for workout cards */
 .workouts-grid {
     display: grid;
@@ -87,7 +101,7 @@
     border-radius: 12px;
     padding: 20px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--tab-border);
     position: relative;
     overflow: hidden;
 }
@@ -193,6 +207,27 @@
     background: rgba(255, 255, 255, 0.05);
 }
 
+/* Loading spinner */
+.button-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-top-color: var(--text-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.button.loading {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.button.success {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+    color: white;
+}
+
 /* Header styling */
 .gradient-text {
     background: linear-gradient(135deg, #818cf8, #6366f1);
@@ -219,7 +254,7 @@
     font-size: 1.1rem;
 }
 
-/* Loading spinner */
+/* Main spinner */
 .spinner {
     width: 40px;
     height: 40px;

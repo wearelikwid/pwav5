@@ -130,6 +130,7 @@ async function handleFormSubmit(event) {
         const workoutData = {
             name: document.getElementById('workout-name').value.trim(),
             type: document.getElementById('workout-type').value.trim(),
+            visibility: document.getElementById('workout-visibility').value,
             sections: getSectionsData(),
             userId: user.uid,
             completed: false,
@@ -222,6 +223,7 @@ async function loadWorkoutData(workoutId) {
 
         document.getElementById('workout-name').value = workout.name || '';
         document.getElementById('workout-type').value = workout.type || '';
+        document.getElementById('workout-visibility').value = workout.visibility || 'private';
         document.getElementById('workout-id').value = workoutId;
 
         const sectionsContainer = document.getElementById('workout-sections');

@@ -5,7 +5,7 @@ const confirmDeleteBtn = document.getElementById('confirmDelete');
 const cancelDeleteBtn = document.getElementById('cancelDelete');
 
 // Tab state
-let currentTab = 'my'; // 'my' or 'public'
+let currentTab = 'my'; // 'my', 'saved', or 'public'
 
 // Initialize event listeners when page loads
 document.addEventListener('DOMContentLoaded', function() {
@@ -22,27 +22,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Initialize tabs
 function initializeTabs() {
-    const tabsContainer = document.createElement('div');
-    tabsContainer.className = 'tabs-container';
-    tabsContainer.innerHTML = `
-        <div class="tabs">
-            <button class="tab active" data-tab="my">My Workouts</button>
-            <button class="tab" data-tab="public">Public Workouts</button>
-        </div>
-    `;
-
-    const header = document.querySelector('.app-header');
-    header.insertBefore(tabsContainer, header.querySelector('h1'));
-
-    // Add tab click listeners
-    tabsContainer.querySelectorAll('.tab').forEach(tab => {
+    document.querySelectorAll('.tab').forEach(tab => {
         tab.addEventListener('click', () => {
-            currentTab = tab.dataset.tab;
+            const selectedTab = tab.dataset.tab;
+            if (selectedTab === currentTab) return;
+
+            currentTab = selectedTab;
             updateActiveTabs();
-            if (currentTab === 'my') {
-                loadWorkouts(firebase.auth().currentUser.uid);
-            } else {
-                loadPublicWorkouts();
+
+            const userId = firebase.auth().currentUser?.uid;
+            if (!userId) return;
+
+            switch (currentTab) {
+                case 'my':
+                    loadWorkouts(userId);
+                    break;
+                case 'saved':
+                    loadSavedWorkouts(userId);
+                    break;
+                case 'public':
+                    loadPublicWorkouts();
+                    break;
             }
         });
     });
@@ -128,6 +128,46 @@ async function loadWorkouts(userId) {
     }
 }
 
+// Load saved workouts
+async function loadSavedWorkouts(userId) {
+    try {
+        showLoading();
+        const savedWorkoutsRef = firebase.firestore().collection('saved_workouts');
+        
+        const savedSnapshot = await savedWorkoutsRef
+            .where('userId', '==', userId)
+            .get();
+        
+        const workoutIds = savedSnapshot.docs.map(doc => doc.data().workoutId);
+        
+        if (workoutIds.length === 0) {
+            displayWorkouts([], 'saved');
+            return;
+        }
+
+        // Get all saved workouts
+        const workouts = [];
+        for (const workoutId of workoutIds) {
+            const workoutDoc = await firebase.firestore()
+                .collection('workouts')
+                .doc(workoutId)
+                .get();
+            
+            if (workoutDoc.exists) {
+                workouts.push({
+                    id: workoutDoc.id,
+                    ...workoutDoc.data()
+                });
+            }
+        }
+        
+        displayWorkouts(workouts, 'saved');
+    } catch (error) {
+        console.error('Error loading saved workouts:', error);
+        showError(error.message);
+    }
+}
+
 // Load public workouts
 async function loadPublicWorkouts() {
     try {
@@ -164,7 +204,7 @@ function displayWorkouts(workouts, type = 'my') {
     if (workouts.length === 0) {
         workoutsList.innerHTML = `
             <div class="empty-state">
-                <p>${type === 'my' ? 'No workouts created yet.' : 'No public workouts available.'}</p>
+                <p>${getEmptyStateMessage(type)}</p>
                 ${type === 'my' ? '<a href="create-workout.html" class="button gradient-button">Create Your First Workout</a>' : ''}
             </div>
         `;
@@ -174,6 +214,19 @@ function displayWorkouts(workouts, type = 'my') {
     workouts.forEach(workout => {
         workoutsList.appendChild(createWorkoutCard(workout, type));
     });
+}
+
+function getEmptyStateMessage(type) {
+    switch (type) {
+        case 'my':
+            return 'No workouts created yet.';
+        case 'saved':
+            return 'No saved workouts yet.';
+        case 'public':
+            return 'No public workouts available.';
+        default:
+            return 'No workouts found.';
+    }
 }
 
 // Create workout card HTML
@@ -204,15 +257,17 @@ function createWorkoutCard(workout, type) {
                 <button onclick="editWorkout('${workout.id}')" class="button secondary">Edit</button>
                 <button onclick="showDeleteConfirmation('${workout.id}')" class="button delete-btn">Delete</button>
             ` : `
-                <button onclick="saveWorkout('${workout.id}')" class="button secondary">Save</button>
+                <button onclick="toggleSaveWorkout('${workout.id}')" class="button secondary save-button" data-workout-id="${workout.id}">
+                    ${type === 'saved' ? 'Unsave' : 'Save'}
+                </button>
             `}
         </div>
     `;
     return div;
 }
 
-// Save workout to user's collection
-async function saveWorkout(workoutId) {
+// Toggle save/unsave workout
+async function toggleSaveWorkout(workoutId) {
     try {
         const userId = firebase.auth().currentUser?.uid;
         if (!userId) {
@@ -220,18 +275,33 @@ async function saveWorkout(workoutId) {
             return;
         }
 
-        await firebase.firestore()
-            .collection('saved_workouts')
-            .add({
+        const savedWorkoutsRef = firebase.firestore().collection('saved_workouts');
+        const query = await savedWorkoutsRef
+            .where('userId', '==', userId)
+            .where('workoutId', '==', workoutId)
+            .get();
+
+        if (query.empty) {
+            // Save workout
+            await savedWorkoutsRef.add({
                 userId: userId,
                 workoutId: workoutId,
                 savedAt: firebase.firestore.FieldValue.serverTimestamp()
             });
+            alert('Workout saved successfully!');
+        } else {
+            // Unsave workout
+            const docToDelete = query.docs[0];
+            await docToDelete.ref.delete();
+            alert('Workout removed from saved!');
 
-        alert('Workout saved successfully!');
+            if (currentTab === 'saved') {
+                loadSavedWorkouts(userId);
+            }
+        }
     } catch (error) {
-        console.error('Error saving workout:', error);
-        showError('Error saving workout: ' + error.message);
+        console.error('Error toggling workout save:', error);
+        showError('Error saving/unsaving workout: ' + error.message);
     }
 }
 
@@ -274,10 +344,16 @@ async function confirmDeleteWorkout(workoutId) {
 function retryLoad() {
     const user = firebase.auth().currentUser;
     if (user) {
-        if (currentTab === 'my') {
-            loadWorkouts(user.uid);
-        } else {
-            loadPublicWorkouts();
+        switch (currentTab) {
+            case 'my':
+                loadWorkouts(user.uid);
+                break;
+            case 'saved':
+                loadSavedWorkouts(user.uid);
+                break;
+            case 'public':
+                loadPublicWorkouts();
+                break;
         }
     } else {
         window.location.href = 'auth.html';
@@ -290,3 +366,10 @@ document.addEventListener('keydown', function(event) {
         hideModal();
     }
 });
+
+// Make functions globally available
+window.startWorkout = startWorkout;
+window.editWorkout = editWorkout;
+window.showDeleteConfirmation = showDeleteConfirmation;
+window.toggleSaveWorkout = toggleSaveWorkout;
+window.retryLoad = retryLoad;

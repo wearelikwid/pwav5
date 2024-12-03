@@ -23,18 +23,37 @@ function showError(message) {
     alert(message);
 }
 
-async function checkWorkoutPermissions(workout, workoutId) {
+async function checkWorkoutAccess(workout, workoutId) {
     const userId = firebase.auth().currentUser?.uid;
     if (!userId) return { canView: false, canComplete: false };
 
-    // Check if user is the owner
+    // If user is the owner
     if (workout.userId === userId) {
         return { canView: true, canComplete: true };
     }
 
-    // Check if workout is public
+    // If workout is public
     if (workout.visibility === 'public') {
-        // For public workouts, need to check if user has saved it to allow completion
+        // Check if user has saved this workout
+        try {
+            const savedWorkoutsRef = firebase.firestore().collection('saved_workouts');
+            const query = await savedWorkoutsRef
+                .where('userId', '==', userId)
+                .where('workoutId', '==', workoutId)
+                .get();
+            
+            return {
+                canView: true,
+                canComplete: !query.empty // Can complete if the workout is saved
+            };
+        } catch (error) {
+            console.error('Error checking saved workouts:', error);
+            return { canView: true, canComplete: false };
+        }
+    }
+
+    // Check if user has saved this workout (for private workouts)
+    try {
         const savedWorkoutsRef = firebase.firestore().collection('saved_workouts');
         const query = await savedWorkoutsRef
             .where('userId', '==', userId)
@@ -42,22 +61,13 @@ async function checkWorkoutPermissions(workout, workoutId) {
             .get();
         
         return {
-            canView: true,
-            canComplete: !query.empty // Can complete if the workout is saved
+            canView: !query.empty,
+            canComplete: !query.empty
         };
+    } catch (error) {
+        console.error('Error checking saved workouts:', error);
+        return { canView: false, canComplete: false };
     }
-
-    // Check if user has saved this workout
-    const savedWorkoutsRef = firebase.firestore().collection('saved_workouts');
-    const query = await savedWorkoutsRef
-        .where('userId', '==', userId)
-        .where('workoutId', '==', workoutId)
-        .get();
-
-    return {
-        canView: !query.empty,
-        canComplete: !query.empty
-    };
 }
 
 async function loadWorkoutData(workoutId) {
@@ -76,7 +86,7 @@ async function loadWorkoutData(workoutId) {
         const workout = doc.data();
         
         // Check permissions
-        const permissions = await checkWorkoutPermissions(workout, workoutId);
+        const permissions = await checkWorkoutAccess(workout, workoutId);
         
         if (!permissions.canView) {
             showError('You do not have permission to view this workout');

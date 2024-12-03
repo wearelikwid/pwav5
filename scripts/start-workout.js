@@ -23,6 +23,31 @@ function showError(message) {
     alert(message);
 }
 
+async function checkWorkoutAccess(workout, workoutId) {
+    const userId = firebase.auth().currentUser?.uid;
+    if (!userId) return false;
+
+    // Check if user is the owner
+    if (workout.userId === userId) return true;
+
+    // Check if workout is public
+    if (workout.visibility === 'public') return true;
+
+    // Check if user has saved this workout
+    try {
+        const savedWorkoutsRef = firebase.firestore().collection('saved_workouts');
+        const query = await savedWorkoutsRef
+            .where('userId', '==', userId)
+            .where('workoutId', '==', workoutId)
+            .get();
+        
+        return !query.empty;
+    } catch (error) {
+        console.error('Error checking saved workouts:', error);
+        return false;
+    }
+}
+
 async function loadWorkoutData(workoutId) {
     try {
         const doc = await firebase.firestore()
@@ -38,8 +63,9 @@ async function loadWorkoutData(workoutId) {
 
         const workout = doc.data();
         
-        // Verify user has permission to view this workout
-        if (workout.userId !== firebase.auth().currentUser?.uid) {
+        // Check user's access to the workout
+        const hasAccess = await checkWorkoutAccess(workout, workoutId);
+        if (!hasAccess) {
             showError('You do not have permission to view this workout');
             window.location.href = 'workouts.html';
             return;

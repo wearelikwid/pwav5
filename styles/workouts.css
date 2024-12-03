@@ -3,6 +3,9 @@
     --success-color: #4CAF50;
     --danger-color: #ff4444;
     --button-gradient: linear-gradient(135deg, #6366f1, #4f46e5);
+    --tab-border: rgba(255, 255, 255, 0.1);
+    --badge-bg: rgba(99, 102, 241, 0.2);
+    --badge-text: #818cf8;
 }
 
 /* Workouts page layout */
@@ -13,26 +16,35 @@
 }
 
 /* Tabs styling */
-.tabs-container {
-    margin-bottom: 24px;
-}
-
 .tabs {
     display: flex;
     gap: 12px;
     margin-bottom: 24px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--tab-border);
     padding-bottom: 12px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar {
+    display: none;
 }
 
 .tab {
     padding: 8px 16px;
     border-radius: 6px;
     background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--tab-border);
     color: var(--text-color);
     cursor: pointer;
     transition: all 0.2s ease;
+    white-space: nowrap;
+    font-size: 0.95rem;
+}
+
+.tab:hover {
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .tab.active {
@@ -74,12 +86,15 @@
     background: var(--card-background);
     border-radius: 12px;
     padding: 20px;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
     border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
 }
 
 .workout-card:hover {
     transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .workout-card h3 {
@@ -103,14 +118,30 @@
 .completion-status {
     color: var(--success-color);
     font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.completion-status:before {
+    content: '✓';
+    font-size: 1.1em;
 }
 
 .visibility-badge {
-    background: rgba(99, 102, 241, 0.2);
-    color: #818cf8;
+    background: var(--badge-bg);
+    color: var(--badge-text);
     padding: 4px 8px;
     border-radius: 4px;
     font-size: 0.8rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.visibility-badge:before {
+    content: '👥';
+    font-size: 1.1em;
 }
 
 /* Card actions */
@@ -118,6 +149,7 @@
     display: flex;
     gap: 8px;
     justify-content: flex-end;
+    flex-wrap: wrap;
 }
 
 .workout-actions button {
@@ -127,22 +159,38 @@
     cursor: pointer;
     transition: all 0.2s ease;
     background: transparent;
+    min-width: 80px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
 }
 
 .workout-actions .button.primary {
     background: var(--button-gradient);
     color: white;
     border: none;
+    flex: 2;
 }
 
 .workout-actions .button.secondary {
     border: 1px solid rgba(255, 255, 255, 0.2);
     color: var(--text-color);
+    flex: 1;
 }
 
 .workout-actions .button.delete-btn {
     border: 1px solid rgba(255, 68, 68, 0.3);
     color: var(--danger-color);
+}
+
+.workout-actions .save-button {
+    position: relative;
+    overflow: hidden;
+}
+
+.workout-actions .save-button:hover {
+    background: rgba(255, 255, 255, 0.05);
 }
 
 /* Header styling */
@@ -161,10 +209,14 @@
     text-align: center;
     padding: 48px 20px;
     color: var(--secondary-text);
+    background: var(--card-background);
+    border-radius: 12px;
+    border: 1px solid var(--tab-border);
 }
 
 .empty-state p {
     margin-bottom: 24px;
+    font-size: 1.1rem;
 }
 
 /* Loading spinner */
@@ -174,7 +226,7 @@
     margin: 0 auto 16px;
     border: 3px solid rgba(255, 255, 255, 0.1);
     border-radius: 50%;
-    border-top-color: var(--text-color);
+    border-top-color: var(--badge-text);
     animation: spin 1s linear infinite;
 }
 
@@ -194,6 +246,7 @@
     z-index: 1000;
     justify-content: center;
     align-items: center;
+    backdrop-filter: blur(4px);
 }
 
 .modal.show {
@@ -206,6 +259,8 @@
     border-radius: 12px;
     max-width: 400px;
     width: 90%;
+    border: 1px solid var(--tab-border);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 .modal-content h3 {
@@ -235,20 +290,30 @@
     }
 
     .workout-actions {
-        flex-wrap: wrap;
+        flex-direction: column;
     }
 
     .workout-actions button {
-        flex: 1;
-        min-width: 80px;
+        width: 100%;
     }
 
     .tabs {
-        overflow-x: auto;
         padding-bottom: 8px;
     }
 
     .tab {
-        white-space: nowrap;
+        flex: 1;
+        text-align: center;
+    }
+
+    .modal-content {
+        margin: 16px;
+    }
+}
+
+/* Dark mode optimization */
+@media (prefers-color-scheme: dark) {
+    .workout-card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 }

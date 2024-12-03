@@ -23,29 +23,41 @@ function showError(message) {
     alert(message);
 }
 
-async function checkWorkoutAccess(workout, workoutId) {
+async function checkWorkoutPermissions(workout, workoutId) {
     const userId = firebase.auth().currentUser?.uid;
-    if (!userId) return false;
+    if (!userId) return { canView: false, canComplete: false };
 
     // Check if user is the owner
-    if (workout.userId === userId) return true;
+    if (workout.userId === userId) {
+        return { canView: true, canComplete: true };
+    }
 
     // Check if workout is public
-    if (workout.visibility === 'public') return true;
-
-    // Check if user has saved this workout
-    try {
+    if (workout.visibility === 'public') {
+        // For public workouts, need to check if user has saved it to allow completion
         const savedWorkoutsRef = firebase.firestore().collection('saved_workouts');
         const query = await savedWorkoutsRef
             .where('userId', '==', userId)
             .where('workoutId', '==', workoutId)
             .get();
         
-        return !query.empty;
-    } catch (error) {
-        console.error('Error checking saved workouts:', error);
-        return false;
+        return {
+            canView: true,
+            canComplete: !query.empty // Can complete if the workout is saved
+        };
     }
+
+    // Check if user has saved this workout
+    const savedWorkoutsRef = firebase.firestore().collection('saved_workouts');
+    const query = await savedWorkoutsRef
+        .where('userId', '==', userId)
+        .where('workoutId', '==', workoutId)
+        .get();
+
+    return {
+        canView: !query.empty,
+        canComplete: !query.empty
+    };
 }
 
 async function loadWorkoutData(workoutId) {
@@ -63,16 +75,17 @@ async function loadWorkoutData(workoutId) {
 
         const workout = doc.data();
         
-        // Check user's access to the workout
-        const hasAccess = await checkWorkoutAccess(workout, workoutId);
-        if (!hasAccess) {
+        // Check permissions
+        const permissions = await checkWorkoutPermissions(workout, workoutId);
+        
+        if (!permissions.canView) {
             showError('You do not have permission to view this workout');
             window.location.href = 'workouts.html';
             return;
         }
 
         displayWorkout(workout);
-        initializeCompleteButton(workoutId, workout.completed);
+        initializeCompleteButton(workoutId, workout.completed, permissions.canComplete);
     } catch (error) {
         console.error('Error loading workout:', error);
         showError('Error loading workout data: ' + error.message);
@@ -148,13 +161,17 @@ function createExerciseElement(exercise) {
     return exerciseElement;
 }
 
-function initializeCompleteButton(workoutId, isCompleted) {
+function initializeCompleteButton(workoutId, isCompleted, canComplete) {
     const completeButton = document.getElementById('complete-workout');
     
     if (isCompleted) {
         completeButton.textContent = 'Workout Completed';
         completeButton.classList.add('completed');
         completeButton.disabled = true;
+    } else if (!canComplete) {
+        completeButton.textContent = 'Save Workout to Complete';
+        completeButton.disabled = true;
+        completeButton.classList.add('disabled');
     } else {
         completeButton.addEventListener('click', async () => {
             try {

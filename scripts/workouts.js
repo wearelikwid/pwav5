@@ -57,7 +57,6 @@ function initializeModalListeners() {
     confirmDeleteBtn.addEventListener('click', async () => {
         if (currentWorkoutToDelete) {
             await confirmDeleteWorkout(currentWorkoutToDelete);
-            loadWorkouts(firebase.auth().currentUser.uid);
         }
         hideModal();
     });
@@ -93,7 +92,7 @@ function showError(message) {
     `;
 }
 
-// Check if workout is saved by current user
+// Check if workout is saved
 async function isWorkoutSaved(workoutId) {
     const userId = firebase.auth().currentUser?.uid;
     if (!userId) return false;
@@ -132,7 +131,7 @@ async function saveWorkout(workoutId) {
         loadWorkouts(userId);
     } catch (error) {
         console.error('Error saving workout:', error);
-        alert('Error saving workout. Please try again.');
+        showError('Error saving workout: ' + error.message);
     }
 }
 
@@ -152,7 +151,7 @@ async function unsaveWorkout(workoutId) {
         loadWorkouts(userId);
     } catch (error) {
         console.error('Error unsaving workout:', error);
-        alert('Error unsaving workout. Please try again.');
+        showError('Error unsaving workout: ' + error.message);
     }
 }
 
@@ -180,7 +179,7 @@ async function loadWorkouts(userId) {
     try {
         showLoading();
         const workoutsRef = firebase.firestore().collection('workouts');
-
+        
         // Cleanup previous listener
         if (unsubscribeListener) {
             unsubscribeListener();
@@ -211,8 +210,8 @@ async function loadWorkouts(userId) {
 
             case 'saved':
                 // Set up real-time listener for saved workouts
-                const savedWorkoutsRef = firebase.firestore().collection('saved_workouts');
-                unsubscribeListener = savedWorkoutsRef
+                unsubscribeListener = firebase.firestore()
+                    .collection('saved_workouts')
                     .where('userId', '==', userId)
                     .orderBy('savedAt', 'desc')
                     .onSnapshot(async (snapshot) => {
@@ -393,7 +392,7 @@ async function confirmDeleteWorkout(workoutId) {
         await batch.commit();
     } catch (error) {
         console.error('Error deleting workout:', error);
-        alert('Error deleting workout. Please try again.');
+        showError('Error deleting workout: ' + error.message);
     }
 }
 

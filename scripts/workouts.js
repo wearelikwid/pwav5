@@ -4,6 +4,7 @@ let currentTab = 'my'; // 'my', 'saved', or 'public'
 const modal = document.getElementById('deleteModal');
 const confirmDeleteBtn = document.getElementById('confirmDelete');
 const cancelDeleteBtn = document.getElementById('cancelDelete');
+let unsubscribeListener = null; // For cleanup of real-time listeners
 
 // Initialize event listeners when page loads
 document.addEventListener('DOMContentLoaded', function() {
@@ -38,6 +39,11 @@ function initializeTabs() {
     const tabs = tabsContainer.querySelectorAll('.tab');
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
+            // Cleanup previous listener if exists
+            if (unsubscribeListener) {
+                unsubscribeListener();
+            }
+            
             tabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
             currentTab = tab.dataset.tab;
@@ -51,6 +57,7 @@ function initializeModalListeners() {
     confirmDeleteBtn.addEventListener('click', async () => {
         if (currentWorkoutToDelete) {
             await confirmDeleteWorkout(currentWorkoutToDelete);
+            loadWorkouts(firebase.auth().currentUser.uid);
         }
         hideModal();
     });
@@ -86,6 +93,69 @@ function showError(message) {
     `;
 }
 
+// Check if workout is saved by current user
+async function isWorkoutSaved(workoutId) {
+    const userId = firebase.auth().currentUser?.uid;
+    if (!userId) return false;
+
+    try {
+        const savedSnapshot = await firebase.firestore()
+            .collection('saved_workouts')
+            .where('userId', '==', userId)
+            .where('workoutId', '==', workoutId)
+            .get();
+
+        return !savedSnapshot.empty;
+    } catch (error) {
+        console.error('Error checking saved status:', error);
+        return false;
+    }
+}
+
+// Save workout
+async function saveWorkout(workoutId) {
+    const userId = firebase.auth().currentUser?.uid;
+    if (!userId) return;
+
+    try {
+        const savedWorkoutId = `${userId}_${workoutId}`;
+        await firebase.firestore()
+            .collection('saved_workouts')
+            .doc(savedWorkoutId)
+            .set({
+                userId: userId,
+                workoutId: workoutId,
+                savedAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+        // Refresh the display
+        loadWorkouts(userId);
+    } catch (error) {
+        console.error('Error saving workout:', error);
+        alert('Error saving workout. Please try again.');
+    }
+}
+
+// Unsave workout
+async function unsaveWorkout(workoutId) {
+    const userId = firebase.auth().currentUser?.uid;
+    if (!userId) return;
+
+    try {
+        const savedWorkoutId = `${userId}_${workoutId}`;
+        await firebase.firestore()
+            .collection('saved_workouts')
+            .doc(savedWorkoutId)
+            .delete();
+
+        // Refresh the display
+        loadWorkouts(userId);
+    } catch (error) {
+        console.error('Error unsaving workout:', error);
+        alert('Error unsaving workout. Please try again.');
+    }
+}
+
 // Check workout completion status
 async function checkWorkoutProgress(workoutId) {
     const userId = firebase.auth().currentUser?.uid;
@@ -110,68 +180,87 @@ async function loadWorkouts(userId) {
     try {
         showLoading();
         const workoutsRef = firebase.firestore().collection('workouts');
-        let workouts = [];
+
+        // Cleanup previous listener
+        if (unsubscribeListener) {
+            unsubscribeListener();
+        }
 
         switch (currentTab) {
             case 'my':
-                // Get user's own workouts
-                const ownedSnapshot = await workoutsRef
+                // Set up real-time listener for user's workouts
+                unsubscribeListener = workoutsRef
                     .where('userId', '==', userId)
                     .orderBy('createdAt', 'desc')
-                    .get();
-                
-                for (const doc of ownedSnapshot.docs) {
-                    const workout = {
-                        id: doc.id,
-                        ...doc.data(),
-                        completed: await checkWorkoutProgress(doc.id)
-                    };
-                    workouts.push(workout);
-                }
+                    .onSnapshot(async (snapshot) => {
+                        const workouts = [];
+                        for (const doc of snapshot.docs) {
+                            const workout = {
+                                id: doc.id,
+                                ...doc.data(),
+                                completed: await checkWorkoutProgress(doc.id)
+                            };
+                            workouts.push(workout);
+                        }
+                        displayWorkouts(workouts);
+                    }, (error) => {
+                        console.error('Error loading workouts:', error);
+                        showError(error.message);
+                    });
                 break;
 
             case 'saved':
-                // Get saved workouts
-                const savedSnapshot = await firebase.firestore()
-                    .collection('saved_workouts')
+                // Set up real-time listener for saved workouts
+                const savedWorkoutsRef = firebase.firestore().collection('saved_workouts');
+                unsubscribeListener = savedWorkoutsRef
                     .where('userId', '==', userId)
                     .orderBy('savedAt', 'desc')
-                    .get();
-
-                for (const savedDoc of savedSnapshot.docs) {
-                    const workoutDoc = await workoutsRef.doc(savedDoc.data().workoutId).get();
-                    if (workoutDoc.exists) {
-                        const workout = {
-                            id: workoutDoc.id,
-                            ...workoutDoc.data(),
-                            completed: await checkWorkoutProgress(workoutDoc.id)
-                        };
-                        workouts.push(workout);
-                    }
-                }
+                    .onSnapshot(async (snapshot) => {
+                        const workouts = [];
+                        for (const savedDoc of snapshot.docs) {
+                            const workoutDoc = await workoutsRef.doc(savedDoc.data().workoutId).get();
+                            if (workoutDoc.exists) {
+                                const workout = {
+                                    id: workoutDoc.id,
+                                    ...workoutDoc.data(),
+                                    completed: await checkWorkoutProgress(workoutDoc.id),
+                                    saved: true
+                                };
+                                workouts.push(workout);
+                            }
+                        }
+                        displayWorkouts(workouts);
+                    }, (error) => {
+                        console.error('Error loading saved workouts:', error);
+                        showError(error.message);
+                    });
                 break;
 
             case 'public':
-                // Get public workouts
-                const publicSnapshot = await workoutsRef
+                // Set up real-time listener for public workouts
+                unsubscribeListener = workoutsRef
                     .where('visibility', '==', 'public')
                     .orderBy('createdAt', 'desc')
-                    .get();
-                
-                for (const doc of publicSnapshot.docs) {
-                    const workout = {
-                        id: doc.id,
-                        ...doc.data(),
-                        completed: await checkWorkoutProgress(doc.id)
-                    };
-                    workouts.push(workout);
-                }
+                    .onSnapshot(async (snapshot) => {
+                        const workouts = [];
+                        for (const doc of snapshot.docs) {
+                            const workout = {
+                                id: doc.id,
+                                ...doc.data(),
+                                completed: await checkWorkoutProgress(doc.id),
+                                saved: await isWorkoutSaved(doc.id)
+                            };
+                            workouts.push(workout);
+                        }
+                        displayWorkouts(workouts);
+                    }, (error) => {
+                        console.error('Error loading public workouts:', error);
+                        showError(error.message);
+                    });
                 break;
         }
-
-        displayWorkouts(workouts);
     } catch (error) {
-        console.error('Error loading workouts:', error);
+        console.error('Error setting up workouts listener:', error);
         showError(error.message);
     }
 }
@@ -236,6 +325,13 @@ function createWorkoutCard(workout) {
             ${isOwner ? `
                 <button onclick="editWorkout('${workout.id}')" class="button secondary">Edit</button>
                 <button onclick="showDeleteConfirmation('${workout.id}')" class="button delete-btn">Delete</button>
+            ` : currentTab === 'public' ? `
+                <button onclick="${workout.saved ? `unsaveWorkout('${workout.id}')` : `saveWorkout('${workout.id}')`}" 
+                        class="button ${workout.saved ? 'delete-btn' : 'secondary'}">
+                    ${workout.saved ? 'Unsave' : 'Save'}
+                </button>
+            ` : currentTab === 'saved' ? `
+                <button onclick="unsaveWorkout('${workout.id}')" class="button delete-btn">Unsave</button>
             ` : ''}
         </div>
     `;
@@ -267,10 +363,34 @@ function hideModal() {
 // Confirm workout deletion
 async function confirmDeleteWorkout(workoutId) {
     try {
-        await firebase.firestore()
-            .collection('workouts')
-            .doc(workoutId)
-            .delete();
+        const batch = firebase.firestore().batch();
+        
+        // Delete all saved_workouts references
+        const savedWorkoutsSnapshot = await firebase.firestore()
+            .collection('saved_workouts')
+            .where('workoutId', '==', workoutId)
+            .get();
+            
+        savedWorkoutsSnapshot.docs.forEach(doc => {
+            batch.delete(doc.ref);
+        });
+
+        // Delete all workout_progress entries
+        const progressSnapshot = await firebase.firestore()
+            .collection('workout_progress')
+            .where('workoutId', '==', workoutId)
+            .get();
+            
+        progressSnapshot.docs.forEach(doc => {
+            batch.delete(doc.ref);
+        });
+
+        // Delete the workout itself
+        const workoutRef = firebase.firestore().collection('workouts').doc(workoutId);
+        batch.delete(workoutRef);
+
+        // Commit all deletes in one batch
+        await batch.commit();
     } catch (error) {
         console.error('Error deleting workout:', error);
         alert('Error deleting workout. Please try again.');
@@ -291,5 +411,12 @@ function retryLoad() {
 document.addEventListener('keydown', function(event) {
     if (event.key === 'Escape' && modal.classList.contains('show')) {
         hideModal();
+    }
+});
+
+// Cleanup listener when leaving page
+window.addEventListener('beforeunload', () => {
+    if (unsubscribeListener) {
+        unsubscribeListener();
     }
 });

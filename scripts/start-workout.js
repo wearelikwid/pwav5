@@ -92,7 +92,7 @@ async function loadWorkoutData(workoutId) {
 
         // Check workout progress
         const progress = await checkWorkoutProgress(workoutId);
-        const isCompleted = progress?.data()?.completed || false;
+        const isCompleted = progress !== null;
 
         displayWorkout(workout);
         initializeCompleteButton(workoutId, isCompleted);
@@ -175,7 +175,6 @@ async function markWorkoutAsComplete(workoutId) {
     const userId = firebase.auth().currentUser?.uid;
     if (!userId) throw new Error('User not authenticated');
 
-    // Create or update workout progress
     const progressRef = firebase.firestore().collection('workout_progress');
     const progressId = `${userId}_${workoutId}`;
 
@@ -187,23 +186,41 @@ async function markWorkoutAsComplete(workoutId) {
     });
 }
 
+async function markWorkoutAsIncomplete(workoutId) {
+    const userId = firebase.auth().currentUser?.uid;
+    if (!userId) throw new Error('User not authenticated');
+
+    const progressRef = firebase.firestore().collection('workout_progress');
+    const progressId = `${userId}_${workoutId}`;
+
+    await progressRef.doc(progressId).delete();
+}
+
 function initializeCompleteButton(workoutId, isCompleted) {
     const completeButton = document.getElementById('complete-workout');
     
     if (isCompleted) {
-        completeButton.textContent = 'Workout Completed';
+        completeButton.textContent = 'Mark as Incomplete';
         completeButton.classList.add('completed');
-        completeButton.disabled = true;
+        completeButton.addEventListener('click', async () => {
+            try {
+                await markWorkoutAsIncomplete(workoutId);
+                completeButton.textContent = 'Mark as Complete';
+                completeButton.classList.remove('completed');
+                window.location.href = 'workouts.html';
+            } catch (error) {
+                console.error('Error marking workout as incomplete:', error);
+                showError('Error marking workout as incomplete: ' + error.message);
+            }
+        });
     } else {
+        completeButton.textContent = 'Mark as Complete';
         completeButton.addEventListener('click', async () => {
             try {
                 await markWorkoutAsComplete(workoutId);
-
                 completeButton.textContent = 'Workout Completed!';
                 completeButton.classList.add('completed');
                 completeButton.classList.add('success-animation');
-                completeButton.disabled = true;
-
                 setTimeout(() => {
                     window.location.href = 'workouts.html';
                 }, 1500);

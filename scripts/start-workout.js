@@ -41,30 +41,29 @@ async function checkWorkoutProgress(workoutId) {
     }
 }
 
-async function checkWorkoutAccess(workout, workoutId) {
+async function checkWorkoutAccess(workout) {
     const userId = firebase.auth().currentUser?.uid;
     if (!userId) return false;
 
-    // If user is the owner
+    // If user is the owner, they have access
     if (workout.userId === userId) return true;
 
-    // If workout is public
-    if (workout.visibility === 'public') {
-        try {
-            const savedSnapshot = await firebase.firestore()
-                .collection('saved_workouts')
-                .where('userId', '==', userId)
-                .where('workoutId', '==', workoutId)
-                .get();
-            
-            return !savedSnapshot.empty;
-        } catch (error) {
-            console.error('Error checking saved workouts:', error);
-            return false;
-        }
-    }
+    // If workout is public, user has access
+    if (workout.visibility === 'public') return true;
 
-    return false;
+    // Check if user has saved this workout
+    try {
+        const savedSnapshot = await firebase.firestore()
+            .collection('saved_workouts')
+            .where('userId', '==', userId)
+            .where('workoutId', '==', workout.id)
+            .get();
+        
+        return !savedSnapshot.empty;
+    } catch (error) {
+        console.error('Error checking saved status:', error);
+        return false;
+    }
 }
 
 async function loadWorkoutData(workoutId) {
@@ -80,11 +79,14 @@ async function loadWorkoutData(workoutId) {
             return;
         }
 
-        const workout = doc.data();
+        const workout = {
+            id: workoutId,
+            ...doc.data()
+        };
         
         // Check access permissions
-        const hasAccess = await checkWorkoutAccess(workout, workoutId);
-        if (!hasAccess && workout.userId !== firebase.auth().currentUser?.uid) {
+        const hasAccess = await checkWorkoutAccess(workout);
+        if (!hasAccess) {
             showError('You do not have permission to view this workout');
             window.location.href = 'workouts.html';
             return;
@@ -207,7 +209,9 @@ function initializeCompleteButton(workoutId, isCompleted) {
                 await markWorkoutAsIncomplete(workoutId);
                 completeButton.textContent = 'Mark as Complete';
                 completeButton.classList.remove('completed');
-                window.location.href = 'workouts.html';
+                setTimeout(() => {
+                    window.location.href = 'workouts.html';
+                }, 1000);
             } catch (error) {
                 console.error('Error marking workout as incomplete:', error);
                 showError('Error marking workout as incomplete: ' + error.message);

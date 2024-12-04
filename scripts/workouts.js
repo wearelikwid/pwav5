@@ -1,9 +1,5 @@
-// Global variables
+// Global variables for modal handling
 let currentWorkoutToDelete = null;
-let currentTab = 'my'; // 'my', 'saved', or 'public'
-let savedWorkoutsCount = 0;
-
-// DOM Elements
 const modal = document.getElementById('deleteModal');
 const confirmDeleteBtn = document.getElementById('confirmDelete');
 const cancelDeleteBtn = document.getElementById('cancelDelete');
@@ -16,53 +12,9 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         initializeModalListeners();
-        initializeTabs();
         loadWorkouts(user.uid);
     });
 });
-
-// Initialize tabs
-function initializeTabs() {
-    document.querySelectorAll('.tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-            const selectedTab = tab.dataset.tab;
-            if (selectedTab === currentTab) return;
-
-            currentTab = selectedTab;
-            updateActiveTabs();
-
-            const userId = firebase.auth().currentUser?.uid;
-            if (!userId) return;
-
-            switch (currentTab) {
-                case 'my':
-                    loadWorkouts(userId);
-                    break;
-                case 'saved':
-                    loadSavedWorkouts(userId);
-                    break;
-                case 'public':
-                    loadPublicWorkouts();
-                    break;
-            }
-        });
-    });
-
-    // Initialize saved workouts count
-    updateSavedWorkoutsCount();
-}
-
-function updateActiveTabs() {
-    document.querySelectorAll('.tab').forEach(tab => {
-        tab.classList.toggle('active', tab.dataset.tab === currentTab);
-    });
-    
-    // Show/hide create button based on tab
-    const createButton = document.querySelector('.create-button-container');
-    if (createButton) {
-        createButton.style.display = currentTab === 'my' ? 'flex' : 'none';
-    }
-}
 
 // Initialize modal event listeners
 function initializeModalListeners() {
@@ -80,29 +32,6 @@ function initializeModalListeners() {
             hideModal();
         }
     };
-}
-
-// Update saved workouts count
-async function updateSavedWorkoutsCount() {
-    const userId = firebase.auth().currentUser?.uid;
-    if (!userId) return;
-
-    try {
-        const snapshot = await firebase.firestore()
-            .collection('saved_workouts')
-            .where('userId', '==', userId)
-            .get();
-
-        savedWorkoutsCount = snapshot.size;
-        
-        // Update the badge in the tab
-        const savedTab = document.querySelector('.tab[data-tab="saved"]');
-        if (savedTab) {
-            savedTab.innerHTML = `Saved Workouts ${savedWorkoutsCount > 0 ? `<span class="badge">${savedWorkoutsCount}</span>` : ''}`;
-        }
-    } catch (error) {
-        console.error('Error getting saved workouts count:', error);
-    }
 }
 
 // Show loading state
@@ -127,137 +56,93 @@ function showError(message) {
     `;
 }
 
-// Load user's workouts from Firebase
+// Check workout progress
+async function checkWorkoutProgress(workoutId, userId) {
+    try {
+        const progressSnapshot = await firebase.firestore()
+            .collection('workout_progress')
+            .where('userId', '==', userId)
+            .where('workoutId', '==', workoutId)
+            .get();
+
+        return !progressSnapshot.empty;
+    } catch (error) {
+        console.error('Error checking workout progress:', error);
+        return false;
+    }
+}
+
+// Load workouts from Firebase
 async function loadWorkouts(userId) {
     try {
         showLoading();
         const workoutsRef = firebase.firestore().collection('workouts');
         
-        workoutsRef
-            .where('userId', '==', userId)
-            .orderBy('createdAt', 'desc')
-            .onSnapshot((snapshot) => {
-                const workouts = [];
-                snapshot.forEach((doc) => {
-                    workouts.push({
-                        id: doc.id,
-                        ...doc.data()
-                    });
-                });
-                displayWorkouts(workouts, 'my');
-            }, (error) => {
-                console.error('Error loading workouts:', error);
-                showError(error.message);
-            });
-    } catch (error) {
-        console.error('Error setting up workout listener:', error);
-        showError(error.message);
-    }
-}
+        // Get all workouts (both owned and saved)
+        const [ownedSnapshot, savedSnapshot] = await Promise.all([
+            workoutsRef.where('userId', '==', userId).get(),
+            firebase.firestore().collection('saved_workouts')
+                .where('userId', '==', userId).get()
+        ]);
 
-// Load saved workouts
-async function loadSavedWorkouts(userId) {
-    try {
-        showLoading();
-        const savedWorkoutsRef = firebase.firestore().collection('saved_workouts');
-        
-        const savedSnapshot = await savedWorkoutsRef
-            .where('userId', '==', userId)
-            .get();
-        
-        const workoutIds = savedSnapshot.docs.map(doc => doc.data().workoutId);
-        
-        if (workoutIds.length === 0) {
-            displayWorkouts([], 'saved');
-            return;
+        // Process owned workouts
+        const ownedWorkouts = [];
+        for (const doc of ownedSnapshot.docs) {
+            const workout = {
+                id: doc.id,
+                ...doc.data(),
+                completed: await checkWorkoutProgress(doc.id, userId)
+            };
+            ownedWorkouts.push(workout);
         }
 
-        // Get all saved workouts
-        const workouts = [];
-        for (const workoutId of workoutIds) {
-            const workoutDoc = await firebase.firestore()
-                .collection('workouts')
-                .doc(workoutId)
-                .get();
-            
+        // Process saved workouts
+        const savedWorkouts = [];
+        for (const savedDoc of savedSnapshot.docs) {
+            const workoutDoc = await workoutsRef.doc(savedDoc.data().workoutId).get();
             if (workoutDoc.exists) {
-                workouts.push({
+                const workout = {
                     id: workoutDoc.id,
-                    ...workoutDoc.data()
-                });
+                    ...workoutDoc.data(),
+                    completed: await checkWorkoutProgress(workoutDoc.id, userId)
+                };
+                savedWorkouts.push(workout);
             }
         }
-        
-        displayWorkouts(workouts, 'saved');
-    } catch (error) {
-        console.error('Error loading saved workouts:', error);
-        showError(error.message);
-    }
-}
 
-// Load public workouts
-async function loadPublicWorkouts() {
-    try {
-        showLoading();
-        const workoutsRef = firebase.firestore().collection('workouts');
-        
-        workoutsRef
-            .where('visibility', '==', 'public')
-            .orderBy('createdAt', 'desc')
-            .onSnapshot((snapshot) => {
-                const workouts = [];
-                snapshot.forEach((doc) => {
-                    workouts.push({
-                        id: doc.id,
-                        ...doc.data()
-                    });
-                });
-                displayWorkouts(workouts, 'public');
-            }, (error) => {
-                console.error('Error loading public workouts:', error);
-                showError(error.message);
-            });
+        // Combine and sort all workouts by creation date
+        const allWorkouts = [...ownedWorkouts, ...savedWorkouts]
+            .sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+
+        displayWorkouts(allWorkouts);
     } catch (error) {
-        console.error('Error setting up public workouts listener:', error);
+        console.error('Error loading workouts:', error);
         showError(error.message);
     }
 }
 
 // Display workouts on the page
-function displayWorkouts(workouts, type = 'my') {
+function displayWorkouts(workouts) {
     const workoutsList = document.getElementById('workouts-list');
     workoutsList.innerHTML = '';
 
     if (workouts.length === 0) {
         workoutsList.innerHTML = `
             <div class="empty-state">
-                <p>${getEmptyStateMessage(type)}</p>
-                ${type === 'my' ? '<a href="create-workout.html" class="button gradient-button">Create Your First Workout</a>' : ''}
+                <p>No workouts created yet.</p>
+                <a href="create-workout.html" class="button gradient-button">Create Your First Workout</a>
             </div>
         `;
         return;
     }
 
     workouts.forEach(workout => {
-        workoutsList.appendChild(createWorkoutCard(workout, type));
+        workoutsList.appendChild(createWorkoutCard(workout));
     });
 }
 
-function getEmptyStateMessage(type) {
-    switch (type) {
-        case 'my':
-            return 'No workouts created yet.';
-        case 'saved':
-            return 'No saved workouts yet.';
-        case 'public':
-            return 'No public workouts available.';
-        default:
-            return 'No workouts found.';
-    }
-}
-
 // Create workout card HTML
-function createWorkoutCard(workout, type) {
+function createWorkoutCard(workout) {
     const div = document.createElement('div');
     div.className = 'workout-card';
     if (workout.completed) {
@@ -267,92 +152,23 @@ function createWorkoutCard(workout, type) {
     const exerciseCount = workout.sections?.reduce((total, section) => 
         total + (section.exercises?.length || 0), 0) || 0;
 
-    const isOwner = workout.userId === firebase.auth().currentUser?.uid;
-
     div.innerHTML = `
         <h3>${workout.name || 'Unnamed Workout'}</h3>
         <div class="workout-meta">
             <span>${exerciseCount} exercise${exerciseCount !== 1 ? 's' : ''}</span>
             ${workout.completed ? '<span class="completion-status">✓ Completed</span>' : ''}
-            ${workout.visibility === 'public' ? '<span class="visibility-badge">Public</span>' : ''}
         </div>
         <div class="workout-actions">
             <button onclick="startWorkout('${workout.id}')" class="button primary">
                 ${workout.completed ? 'View' : 'Start'}
             </button>
-            ${isOwner ? `
+            ${workout.userId === firebase.auth().currentUser?.uid ? `
                 <button onclick="editWorkout('${workout.id}')" class="button secondary">Edit</button>
                 <button onclick="showDeleteConfirmation('${workout.id}')" class="button delete-btn">Delete</button>
-            ` : `
-                <button onclick="toggleSaveWorkout('${workout.id}', this)" class="button secondary save-button" data-workout-id="${workout.id}">
-                    ${type === 'saved' ? 'Unsave' : 'Save'}
-                </button>
-            `}
+            ` : ''}
         </div>
     `;
     return div;
-}
-
-// Toggle save/unsave workout
-async function toggleSaveWorkout(workoutId, button) {
-    try {
-        const userId = firebase.auth().currentUser?.uid;
-        if (!userId) {
-            showError('Please sign in to save workouts');
-            return;
-        }
-
-        // Disable button and show loading state
-        button.disabled = true;
-        const originalText = button.textContent;
-        button.innerHTML = '<div class="button-spinner"></div>';
-        button.classList.add('loading');
-
-        const savedWorkoutsRef = firebase.firestore().collection('saved_workouts');
-        const query = await savedWorkoutsRef
-            .where('userId', '==', userId)
-            .where('workoutId', '==', workoutId)
-            .get();
-
-        if (query.empty) {
-            // Save workout
-            await savedWorkoutsRef.add({
-                userId: userId,
-                workoutId: workoutId,
-                savedAt: firebase.firestore.FieldValue.serverTimestamp()
-            });
-            button.textContent = 'Unsave';
-            savedWorkoutsCount++;
-        } else {
-            // Unsave workout
-            const docToDelete = query.docs[0];
-            await docToDelete.ref.delete();
-            button.textContent = 'Save';
-            savedWorkoutsCount--;
-
-            if (currentTab === 'saved') {
-                loadSavedWorkouts(userId);
-            }
-        }
-
-        // Update the badge after save/unsave
-        updateSavedWorkoutsCount();
-
-        // Show success state
-        button.classList.add('success');
-        setTimeout(() => {
-            button.classList.remove('success');
-        }, 1000);
-
-    } catch (error) {
-        console.error('Error toggling workout save:', error);
-        showError('Error saving/unsaving workout: ' + error.message);
-        button.textContent = originalText;
-    } finally {
-        // Re-enable button and remove loading state
-        button.disabled = false;
-        button.classList.remove('loading');
-    }
 }
 
 // Function to start a workout
@@ -394,17 +210,7 @@ async function confirmDeleteWorkout(workoutId) {
 function retryLoad() {
     const user = firebase.auth().currentUser;
     if (user) {
-        switch (currentTab) {
-            case 'my':
-                loadWorkouts(user.uid);
-                break;
-            case 'saved':
-                loadSavedWorkouts(user.uid);
-                break;
-            case 'public':
-                loadPublicWorkouts();
-                break;
-        }
+        loadWorkouts(user.uid);
     } else {
         window.location.href = 'auth.html';
     }
@@ -416,10 +222,3 @@ document.addEventListener('keydown', function(event) {
         hideModal();
     }
 });
-
-// Make functions globally available
-window.startWorkout = startWorkout;
-window.editWorkout = editWorkout;
-window.showDeleteConfirmation = showDeleteConfirmation;
-window.toggleSaveWorkout = toggleSaveWorkout;
-window.retryLoad = retryLoad;

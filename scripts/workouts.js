@@ -1,5 +1,6 @@
-// Global variables for modal handling
+// Global variables
 let currentWorkoutToDelete = null;
+let currentTab = 'my'; // 'my', 'saved', or 'public'
 const modal = document.getElementById('deleteModal');
 const confirmDeleteBtn = document.getElementById('confirmDelete');
 const cancelDeleteBtn = document.getElementById('cancelDelete');
@@ -12,11 +13,40 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         initializeModalListeners();
+        initializeTabs();
         loadWorkouts(user.uid);
     });
 });
 
-// Initialize modal event listeners
+// Initialize tabs
+function initializeTabs() {
+    const tabsContainer = document.createElement('div');
+    tabsContainer.className = 'tabs-container';
+    tabsContainer.innerHTML = `
+        <div class="tabs">
+            <button class="tab active" data-tab="my">My Workouts</button>
+            <button class="tab" data-tab="saved">Saved Workouts</button>
+            <button class="tab" data-tab="public">Public Workouts</button>
+        </div>
+    `;
+
+    // Insert tabs after header
+    const header = document.querySelector('.app-header');
+    header.insertAdjacentElement('afterend', tabsContainer);
+
+    // Add tab click listeners
+    const tabs = tabsContainer.querySelectorAll('.tab');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            currentTab = tab.dataset.tab;
+            loadWorkouts(firebase.auth().currentUser.uid);
+        });
+    });
+}
+
+// Initialize modal listeners
 function initializeModalListeners() {
     confirmDeleteBtn.addEventListener('click', async () => {
         if (currentWorkoutToDelete) {
@@ -56,8 +86,11 @@ function showError(message) {
     `;
 }
 
-// Check workout progress
-async function checkWorkoutProgress(workoutId, userId) {
+// Check workout completion status
+async function checkWorkoutProgress(workoutId) {
+    const userId = firebase.auth().currentUser?.uid;
+    if (!userId) return false;
+
     try {
         const progressSnapshot = await firebase.firestore()
             .collection('workout_progress')
@@ -72,49 +105,71 @@ async function checkWorkoutProgress(workoutId, userId) {
     }
 }
 
-// Load workouts from Firebase
+// Load workouts based on current tab
 async function loadWorkouts(userId) {
     try {
         showLoading();
         const workoutsRef = firebase.firestore().collection('workouts');
-        
-        // Get all workouts (both owned and saved)
-        const [ownedSnapshot, savedSnapshot] = await Promise.all([
-            workoutsRef.where('userId', '==', userId).get(),
-            firebase.firestore().collection('saved_workouts')
-                .where('userId', '==', userId).get()
-        ]);
+        let workouts = [];
 
-        // Process owned workouts
-        const ownedWorkouts = [];
-        for (const doc of ownedSnapshot.docs) {
-            const workout = {
-                id: doc.id,
-                ...doc.data(),
-                completed: await checkWorkoutProgress(doc.id, userId)
-            };
-            ownedWorkouts.push(workout);
+        switch (currentTab) {
+            case 'my':
+                // Get user's own workouts
+                const ownedSnapshot = await workoutsRef
+                    .where('userId', '==', userId)
+                    .orderBy('createdAt', 'desc')
+                    .get();
+                
+                for (const doc of ownedSnapshot.docs) {
+                    const workout = {
+                        id: doc.id,
+                        ...doc.data(),
+                        completed: await checkWorkoutProgress(doc.id)
+                    };
+                    workouts.push(workout);
+                }
+                break;
+
+            case 'saved':
+                // Get saved workouts
+                const savedSnapshot = await firebase.firestore()
+                    .collection('saved_workouts')
+                    .where('userId', '==', userId)
+                    .orderBy('savedAt', 'desc')
+                    .get();
+
+                for (const savedDoc of savedSnapshot.docs) {
+                    const workoutDoc = await workoutsRef.doc(savedDoc.data().workoutId).get();
+                    if (workoutDoc.exists) {
+                        const workout = {
+                            id: workoutDoc.id,
+                            ...workoutDoc.data(),
+                            completed: await checkWorkoutProgress(workoutDoc.id)
+                        };
+                        workouts.push(workout);
+                    }
+                }
+                break;
+
+            case 'public':
+                // Get public workouts
+                const publicSnapshot = await workoutsRef
+                    .where('visibility', '==', 'public')
+                    .orderBy('createdAt', 'desc')
+                    .get();
+                
+                for (const doc of publicSnapshot.docs) {
+                    const workout = {
+                        id: doc.id,
+                        ...doc.data(),
+                        completed: await checkWorkoutProgress(doc.id)
+                    };
+                    workouts.push(workout);
+                }
+                break;
         }
 
-        // Process saved workouts
-        const savedWorkouts = [];
-        for (const savedDoc of savedSnapshot.docs) {
-            const workoutDoc = await workoutsRef.doc(savedDoc.data().workoutId).get();
-            if (workoutDoc.exists) {
-                const workout = {
-                    id: workoutDoc.id,
-                    ...workoutDoc.data(),
-                    completed: await checkWorkoutProgress(workoutDoc.id, userId)
-                };
-                savedWorkouts.push(workout);
-            }
-        }
-
-        // Combine and sort all workouts by creation date
-        const allWorkouts = [...ownedWorkouts, ...savedWorkouts]
-            .sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
-
-        displayWorkouts(allWorkouts);
+        displayWorkouts(workouts);
     } catch (error) {
         console.error('Error loading workouts:', error);
         showError(error.message);
@@ -129,8 +184,8 @@ function displayWorkouts(workouts) {
     if (workouts.length === 0) {
         workoutsList.innerHTML = `
             <div class="empty-state">
-                <p>No workouts created yet.</p>
-                <a href="create-workout.html" class="button gradient-button">Create Your First Workout</a>
+                <p>${getEmptyStateMessage()}</p>
+                ${currentTab === 'my' ? '<a href="create-workout.html" class="button gradient-button">Create Your First Workout</a>' : ''}
             </div>
         `;
         return;
@@ -139,6 +194,20 @@ function displayWorkouts(workouts) {
     workouts.forEach(workout => {
         workoutsList.appendChild(createWorkoutCard(workout));
     });
+}
+
+// Get empty state message based on current tab
+function getEmptyStateMessage() {
+    switch (currentTab) {
+        case 'my':
+            return 'No workouts created yet.';
+        case 'saved':
+            return 'No saved workouts yet.';
+        case 'public':
+            return 'No public workouts available.';
+        default:
+            return 'No workouts found.';
+    }
 }
 
 // Create workout card HTML
@@ -152,6 +221,8 @@ function createWorkoutCard(workout) {
     const exerciseCount = workout.sections?.reduce((total, section) => 
         total + (section.exercises?.length || 0), 0) || 0;
 
+    const isOwner = workout.userId === firebase.auth().currentUser?.uid;
+
     div.innerHTML = `
         <h3>${workout.name || 'Unnamed Workout'}</h3>
         <div class="workout-meta">
@@ -162,7 +233,7 @@ function createWorkoutCard(workout) {
             <button onclick="startWorkout('${workout.id}')" class="button primary">
                 ${workout.completed ? 'View' : 'Start'}
             </button>
-            ${workout.userId === firebase.auth().currentUser?.uid ? `
+            ${isOwner ? `
                 <button onclick="editWorkout('${workout.id}')" class="button secondary">Edit</button>
                 <button onclick="showDeleteConfirmation('${workout.id}')" class="button delete-btn">Delete</button>
             ` : ''}

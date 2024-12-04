@@ -4,7 +4,6 @@ let currentTab = 'my'; // 'my', 'saved', or 'public'
 const modal = document.getElementById('deleteModal');
 const confirmDeleteBtn = document.getElementById('confirmDelete');
 const cancelDeleteBtn = document.getElementById('cancelDelete');
-let unsubscribeListener = null; // For cleanup of real-time listeners
 
 // Initialize event listeners when page loads
 document.addEventListener('DOMContentLoaded', function() {
@@ -39,11 +38,6 @@ function initializeTabs() {
     const tabs = tabsContainer.querySelectorAll('.tab');
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
-            // Cleanup previous listener if exists
-            if (unsubscribeListener) {
-                unsubscribeListener();
-            }
-            
             tabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
             currentTab = tab.dataset.tab;
@@ -201,7 +195,7 @@ async function loadWorkouts(userId) {
 
             case 'saved':
                 try {
-                    // First get saved workout IDs without orderBy
+                    // Get saved workouts without orderBy
                     const savedSnapshot = await firebase.firestore()
                         .collection('saved_workouts')
                         .where('userId', '==', userId)
@@ -228,17 +222,18 @@ async function loadWorkouts(userId) {
                             }
                         } catch (innerError) {
                             console.error('Error loading individual workout:', innerError);
-                            showError('Error loading workout: ' + innerError.message);
+                            continue; // Skip this workout and continue with others
                         }
                     }
 
-                    // Sort manually by creation date
+                    // Sort manually if needed
                     workouts.sort((a, b) => 
                         (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)
                     );
                 } catch (error) {
                     console.error('Error loading saved workouts:', error);
                     showError('Error loading saved workouts: ' + error.message);
+                    return;
                 }
                 break;
 

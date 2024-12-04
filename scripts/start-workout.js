@@ -23,51 +23,48 @@ function showError(message) {
     alert(message);
 }
 
+async function checkWorkoutProgress(workoutId) {
+    const userId = firebase.auth().currentUser?.uid;
+    if (!userId) return null;
+
+    try {
+        const progressSnapshot = await firebase.firestore()
+            .collection('workout_progress')
+            .where('userId', '==', userId)
+            .where('workoutId', '==', workoutId)
+            .get();
+
+        return progressSnapshot.empty ? null : progressSnapshot.docs[0];
+    } catch (error) {
+        console.error('Error checking workout progress:', error);
+        return null;
+    }
+}
+
 async function checkWorkoutAccess(workout, workoutId) {
     const userId = firebase.auth().currentUser?.uid;
-    if (!userId) return { canView: false, canComplete: false };
+    if (!userId) return false;
 
     // If user is the owner
-    if (workout.userId === userId) {
-        return { canView: true, canComplete: true };
-    }
+    if (workout.userId === userId) return true;
 
     // If workout is public
     if (workout.visibility === 'public') {
-        // Check if user has saved this workout
         try {
-            const savedWorkoutsRef = firebase.firestore().collection('saved_workouts');
-            const query = await savedWorkoutsRef
+            const savedSnapshot = await firebase.firestore()
+                .collection('saved_workouts')
                 .where('userId', '==', userId)
                 .where('workoutId', '==', workoutId)
                 .get();
             
-            return {
-                canView: true,
-                canComplete: !query.empty // Can complete if the workout is saved
-            };
+            return !savedSnapshot.empty;
         } catch (error) {
             console.error('Error checking saved workouts:', error);
-            return { canView: true, canComplete: false };
+            return false;
         }
     }
 
-    // Check if user has saved this workout (for private workouts)
-    try {
-        const savedWorkoutsRef = firebase.firestore().collection('saved_workouts');
-        const query = await savedWorkoutsRef
-            .where('userId', '==', userId)
-            .where('workoutId', '==', workoutId)
-            .get();
-        
-        return {
-            canView: !query.empty,
-            canComplete: !query.empty
-        };
-    } catch (error) {
-        console.error('Error checking saved workouts:', error);
-        return { canView: false, canComplete: false };
-    }
+    return false;
 }
 
 async function loadWorkoutData(workoutId) {
@@ -85,17 +82,20 @@ async function loadWorkoutData(workoutId) {
 
         const workout = doc.data();
         
-        // Check permissions
-        const permissions = await checkWorkoutAccess(workout, workoutId);
-        
-        if (!permissions.canView) {
+        // Check access permissions
+        const hasAccess = await checkWorkoutAccess(workout, workoutId);
+        if (!hasAccess && workout.userId !== firebase.auth().currentUser?.uid) {
             showError('You do not have permission to view this workout');
             window.location.href = 'workouts.html';
             return;
         }
 
+        // Check workout progress
+        const progress = await checkWorkoutProgress(workoutId);
+        const isCompleted = progress?.data()?.completed || false;
+
         displayWorkout(workout);
-        initializeCompleteButton(workoutId, workout.completed, permissions.canComplete);
+        initializeCompleteButton(workoutId, isCompleted);
     } catch (error) {
         console.error('Error loading workout:', error);
         showError('Error loading workout data: ' + error.message);
@@ -171,27 +171,33 @@ function createExerciseElement(exercise) {
     return exerciseElement;
 }
 
-function initializeCompleteButton(workoutId, isCompleted, canComplete) {
+async function markWorkoutAsComplete(workoutId) {
+    const userId = firebase.auth().currentUser?.uid;
+    if (!userId) throw new Error('User not authenticated');
+
+    // Create or update workout progress
+    const progressRef = firebase.firestore().collection('workout_progress');
+    const progressId = `${userId}_${workoutId}`;
+
+    await progressRef.doc(progressId).set({
+        userId: userId,
+        workoutId: workoutId,
+        completed: true,
+        completedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+}
+
+function initializeCompleteButton(workoutId, isCompleted) {
     const completeButton = document.getElementById('complete-workout');
     
     if (isCompleted) {
         completeButton.textContent = 'Workout Completed';
         completeButton.classList.add('completed');
         completeButton.disabled = true;
-    } else if (!canComplete) {
-        completeButton.textContent = 'Save Workout to Complete';
-        completeButton.disabled = true;
-        completeButton.classList.add('disabled');
     } else {
         completeButton.addEventListener('click', async () => {
             try {
-                await firebase.firestore()
-                    .collection('workouts')
-                    .doc(workoutId)
-                    .update({
-                        completed: true,
-                        completedAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
+                await markWorkoutAsComplete(workoutId);
 
                 completeButton.textContent = 'Workout Completed!';
                 completeButton.classList.add('completed');

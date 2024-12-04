@@ -179,44 +179,43 @@ async function loadWorkouts(userId) {
     try {
         showLoading();
         const workoutsRef = firebase.firestore().collection('workouts');
-        
-        // Cleanup previous listener
-        if (unsubscribeListener) {
-            unsubscribeListener();
-        }
+        let workouts = [];
 
         switch (currentTab) {
             case 'my':
-                // Set up real-time listener for user's workouts
-                unsubscribeListener = workoutsRef
+                // Get user's own workouts
+                const ownedSnapshot = await workoutsRef
                     .where('userId', '==', userId)
                     .orderBy('createdAt', 'desc')
-                    .onSnapshot(async (snapshot) => {
-                        const workouts = [];
-                        for (const doc of snapshot.docs) {
-                            const workout = {
-                                id: doc.id,
-                                ...doc.data(),
-                                completed: await checkWorkoutProgress(doc.id)
-                            };
-                            workouts.push(workout);
-                        }
-                        displayWorkouts(workouts);
-                    }, (error) => {
-                        console.error('Error loading workouts:', error);
-                        showError(error.message);
-                    });
+                    .get();
+                
+                for (const doc of ownedSnapshot.docs) {
+                    const workout = {
+                        id: doc.id,
+                        ...doc.data(),
+                        completed: await checkWorkoutProgress(doc.id)
+                    };
+                    workouts.push(workout);
+                }
                 break;
 
             case 'saved':
-                // Set up real-time listener for saved workouts
-                unsubscribeListener = firebase.firestore()
-                    .collection('saved_workouts')
-                    .where('userId', '==', userId)
-                    .orderBy('savedAt', 'desc')
-                    .onSnapshot(async (snapshot) => {
-                        const workouts = [];
-                        for (const savedDoc of snapshot.docs) {
+                try {
+                    // First get saved workout IDs without orderBy
+                    const savedSnapshot = await firebase.firestore()
+                        .collection('saved_workouts')
+                        .where('userId', '==', userId)
+                        .get();
+
+                    // Show empty state if no saved workouts
+                    if (savedSnapshot.empty) {
+                        displayWorkouts([]);
+                        return;
+                    }
+
+                    // Get workout details one by one
+                    for (const savedDoc of savedSnapshot.docs) {
+                        try {
                             const workoutDoc = await workoutsRef.doc(savedDoc.data().workoutId).get();
                             if (workoutDoc.exists) {
                                 const workout = {
@@ -227,39 +226,44 @@ async function loadWorkouts(userId) {
                                 };
                                 workouts.push(workout);
                             }
+                        } catch (innerError) {
+                            console.error('Error loading individual workout:', innerError);
+                            showError('Error loading workout: ' + innerError.message);
                         }
-                        displayWorkouts(workouts);
-                    }, (error) => {
-                        console.error('Error loading saved workouts:', error);
-                        showError(error.message);
-                    });
+                    }
+
+                    // Sort manually by creation date
+                    workouts.sort((a, b) => 
+                        (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0)
+                    );
+                } catch (error) {
+                    console.error('Error loading saved workouts:', error);
+                    showError('Error loading saved workouts: ' + error.message);
+                }
                 break;
 
             case 'public':
-                // Set up real-time listener for public workouts
-                unsubscribeListener = workoutsRef
+                // Get public workouts
+                const publicSnapshot = await workoutsRef
                     .where('visibility', '==', 'public')
                     .orderBy('createdAt', 'desc')
-                    .onSnapshot(async (snapshot) => {
-                        const workouts = [];
-                        for (const doc of snapshot.docs) {
-                            const workout = {
-                                id: doc.id,
-                                ...doc.data(),
-                                completed: await checkWorkoutProgress(doc.id),
-                                saved: await isWorkoutSaved(doc.id)
-                            };
-                            workouts.push(workout);
-                        }
-                        displayWorkouts(workouts);
-                    }, (error) => {
-                        console.error('Error loading public workouts:', error);
-                        showError(error.message);
-                    });
+                    .get();
+                
+                for (const doc of publicSnapshot.docs) {
+                    const workout = {
+                        id: doc.id,
+                        ...doc.data(),
+                        completed: await checkWorkoutProgress(doc.id),
+                        saved: await isWorkoutSaved(doc.id)
+                    };
+                    workouts.push(workout);
+                }
                 break;
         }
+
+        displayWorkouts(workouts);
     } catch (error) {
-        console.error('Error setting up workouts listener:', error);
+        console.error('Error loading workouts:', error);
         showError(error.message);
     }
 }
@@ -410,12 +414,5 @@ function retryLoad() {
 document.addEventListener('keydown', function(event) {
     if (event.key === 'Escape' && modal.classList.contains('show')) {
         hideModal();
-    }
-});
-
-// Cleanup listener when leaving page
-window.addEventListener('beforeunload', () => {
-    if (unsubscribeListener) {
-        unsubscribeListener();
     }
 });

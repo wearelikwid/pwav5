@@ -20,7 +20,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function showError(message) {
     console.error(message);
-    alert(message);
+    const errorMessage = message.includes('offline') ? 
+        'Please check your internet connection and try again.' : 
+        message;
+    alert(errorMessage);
 }
 
 async function checkWorkoutProgress(workoutId) {
@@ -45,34 +48,34 @@ async function checkWorkoutAccess(workout) {
     const userId = firebase.auth().currentUser?.uid;
     if (!userId) return false;
 
-    // If user is the owner, they have access
-    if (workout.userId === userId) return true;
+    // If user is the owner or workout is public, they have access
+    return workout.userId === userId || workout.visibility === 'public';
+}
 
-    // If workout is public, user has access
-    if (workout.visibility === 'public') return true;
+async function loadWorkoutWithRetry(workoutId, attempts = 3) {
+    for (let i = 0; i < attempts; i++) {
+        try {
+            const doc = await firebase.firestore()
+                .collection('workouts')
+                .doc(workoutId)
+                .get();
 
-    // Check if user has saved this workout
-    try {
-        const savedSnapshot = await firebase.firestore()
-            .collection('saved_workouts')
-            .where('userId', '==', userId)
-            .where('workoutId', '==', workout.id)
-            .get();
-        
-        return !savedSnapshot.empty;
-    } catch (error) {
-        console.error('Error checking saved status:', error);
-        return false;
+            if (doc.exists) {
+                return doc;
+            }
+            throw new Error('Workout not found');
+        } catch (error) {
+            console.error(`Attempt ${i + 1} failed:`, error);
+            if (i === attempts - 1) throw error;
+            await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1))); // Exponential backoff
+        }
     }
 }
 
 async function loadWorkoutData(workoutId) {
     try {
-        const doc = await firebase.firestore()
-            .collection('workouts')
-            .doc(workoutId)
-            .get();
-
+        const doc = await loadWorkoutWithRetry(workoutId);
+        
         if (!doc.exists) {
             showError('Workout not found');
             window.location.href = 'workouts.html';
@@ -100,7 +103,12 @@ async function loadWorkoutData(workoutId) {
         initializeCompleteButton(workoutId, isCompleted);
     } catch (error) {
         console.error('Error loading workout:', error);
-        showError('Error loading workout data: ' + error.message);
+        const isOffline = !navigator.onLine || error.message.includes('offline');
+        if (isOffline) {
+            showError('Please check your internet connection and try again.');
+        } else {
+            showError('Error loading workout data: ' + error.message);
+        }
     }
 }
 
@@ -235,3 +243,12 @@ function initializeCompleteButton(workoutId, isCompleted) {
         });
     }
 }
+
+// Add network status monitoring
+window.addEventListener('online', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const workoutId = urlParams.get('id');
+    if (workoutId) {
+        loadWorkoutData(workoutId);
+    }
+});

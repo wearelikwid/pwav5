@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <meta name='theme-color' content='#242424'>
+    <meta name='description' content='El Forma - Create Program'>
+    <meta name='apple-mobile-web-app-capable' content='yes'>
+    <meta name='mobile-web-app-capable' content='yes'>
+    <meta name='apple-mobile-web-app-status-bar-style' content='black'>
+    <meta name='apple-mobile-web-app-title' content='El Forma'>
+    <title>El Forma - Create Program</title>
+
+    <!-- Styles -->
+    <link rel='stylesheet' href='styles/main.css'>
+    <link rel='stylesheet' href='styles/create-program.css'>
+</head>
+<body>
+    <div class='container'>
+        <header class='app-header'>
+            <a href='programs.html' class='back-button'>←</a>
+            <h1>Create Program</h1>
+        </header>
+
+        <main>
+            <form id='create-program-form' class='program-form'>
+                <div class='form-group'>
+                    <label for='program-name'>Program Name</label>
+                    <input type='text' id='program-name' name='program-name' required>
+                </div>
+
+                <div class='form-group'>
+                    <label for='program-duration'>Duration (weeks)</label>
+                    <input type='number' id='program-duration' name='program-duration' min='1' required>
+                </div>
+
+                <div id='program-weeks' class='program-weeks'>
+                    <!-- Weeks will be added here dynamically -->
+                </div>
+
+                <div class='form-actions'>
+                    <button type='submit' class='button primary'>Save Program</button>
+                    <button type='button' class='button secondary' onclick="window.location.href='programs.html'">Cancel</button>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
+    <!-- Your Firebase Config -->
+    <script src="scripts/firebase-config.js"></script>
+    
+    <!-- Your App Scripts -->
+    <script src='scripts/create-program.js'></script>
+</body>
+</html>

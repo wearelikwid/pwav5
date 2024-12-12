@@ -1,0 +1,166 @@
+/* Form Layout */
+.program-form {
+    background: var(--card-background);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 32px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-color);
+    font-size: 1rem;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--gradient-start);
+}
+
+/* Program Weeks Section */
+.program-weeks {
+    margin-top: 32px;
+}
+
+.week-container {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 24px;
+}
+
+.week-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.week-title {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+/* Days Section */
+.week-days {
+    display: grid;
+    gap: 16px;
+}
+
+.program-day {
+    background: var(--card-background);
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.day-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.day-title {
+    font-weight: 500;
+}
+
+/* Exercise Section */
+.exercise-list {
+    display: grid;
+    gap: 12px;
+}
+
+.exercise-item {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.exercise-inputs {
+    display: grid;
+    grid-template-columns: 1fr 80px 80px;
+    gap: 12px;
+    align-items: center;
+}
+
+/* Buttons */
+.add-button, .remove-button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.add-button {
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    color: white;
+}
+
+.remove-button {
+    background: rgba(255, 59, 48, 0.1);
+    color: #ff3b30;
+}
+
+.add-button:hover {
+    opacity: 0.9;
+}
+
+.remove-button:hover {
+    background: rgba(255, 59, 48, 0.2);
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 32px;
+}
+
+.form-actions button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.button.primary {
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    color: white;
+}
+
+.button.secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-color);
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .exercise-inputs {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+}

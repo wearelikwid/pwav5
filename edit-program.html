@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#242424">
+    <meta name="description" content="El Forma - Edit Program">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="El Forma">
+    <title>El Forma - Edit Program</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/create-program.css">
+</head>
+<body>
+    <div class="container">
+        <header class="app-header">
+            <a href="programs.html" class="back-button">←</a>
+            <h1>Edit Program</h1>
+        </header>
+
+        <main>
+            <form id="edit-program-form" class="program-form">
+                <div class="form-group">
+                    <label for="program-name">Program Name</label>
+                    <input type="text" id="program-name" name="program-name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="program-duration">Duration (weeks)</label>
+                    <input type="number" id="program-duration" name="program-duration" min="1" max="52" required>
+                </div>
+
+                <div id="program-weeks" class="program-weeks">
+                    <!-- Weeks will be dynamically added here -->
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="button primary">Save Changes</button>
+                    <a href="programs.html" class="button secondary">Cancel</a>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <!-- Template for Week -->
+    <template id="week-template">
+        <div class="program-week" data-week="">
+            <div class="week-header">
+                <h3>Week</h3>
+            </div>
+            <div class="week-days">
+                <!-- Days will be added here -->
+            </div>
+            <button type="button" class="button secondary add-day">Add Day</button>
+        </div>
+    </template>
+
+    <!-- Template for Day -->
+    <template id="day-template">
+        <div class="program-day">
+            <div class="day-header">
+                <h4>Day</h4>
+                <button type="button" class="button small danger">Remove Day</button>
+            </div>
+            <div class="exercises">
+                <button type="button" class="button small">Add Exercise</button>
+            </div>
+        </div>
+    </template>
+
+    <!-- Template for Exercise -->
+    <template id="exercise-template">
+        <div class="exercise-item">
+            <input type="text" class="exercise-name" placeholder="Exercise name" required>
+            <input type="number" class="exercise-sets" placeholder="Sets" min="1" required>
+            <input type="number" class="exercise-reps" placeholder="Reps" min="1" required>
+            <button type="button" class="button small danger">Remove</button>
+        </div>
+    </template>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
+    <!-- Your Firebase Config -->
+    <script src="scripts/firebase-config.js"></script>
+    
+    <!-- Your App Scripts -->
+    <script src="scripts/edit-program.js"></script>
+</body>
+</html>

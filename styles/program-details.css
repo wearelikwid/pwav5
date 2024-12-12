@@ -1,0 +1,164 @@
+/* Program Header Styles */
+.program-header {
+    background: var(--card-background);
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+}
+
+.program-title {
+    margin: 0 0 12px 0;
+    font-size: 1.8rem;
+    color: var(--text-primary);
+}
+
+.program-meta {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.duration-badge {
+    background: var(--accent-color);
+    color: var(--text-primary);
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 0.9rem;
+}
+
+/* Weeks Container */
+.weeks-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Week Card Styles */
+.week-card {
+    background: var(--card-background);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.week-header {
+    margin-bottom: 16px;
+}
+
+.week-title {
+    margin: 0;
+    font-size: 1.4rem;
+    color: var(--text-primary);
+}
+
+/* Days Container */
+.days-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+/* Day Card Styles */
+.day-card {
+    background: var(--background);
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.day-header {
+    margin-bottom: 12px;
+}
+
+.day-title {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+}
+
+/* Exercises List */
+.exercises-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.exercise-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    background: var(--card-background);
+    border-radius: 6px;
+}
+
+.exercise-name {
+    font-weight: 500;
+}
+
+.exercise-details {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: var(--card-background);
+    padding: 24px;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 90%;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 24px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .days-container {
+        grid-template-columns: 1fr;
+    }
+
+    .program-header {
+        margin: 16px;
+    }
+
+    .weeks-container {
+        padding: 16px;
+    }
+}
+
+/* Button Styles */
+.icon-button {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background-color 0.3s;
+}
+
+.icon-button:hover {
+    background: var(--hover-background);
+}
+
+.header-actions {
+    display: flex;
+    gap: 12px;
+}

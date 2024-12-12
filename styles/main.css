@@ -1,4 +1,3 @@
-/* main.css */
 :root {
     --gradient-start: #7E57C2;
     --gradient-end: #2196F3;
@@ -6,19 +5,16 @@
     --card-background: #1E1E1E;
     --text-color: #ffffff;
     --secondary-text: rgba(255, 255, 255, 0.7);
-    --error-color: #ff3b30;
-    --success-color: #34c759;
-    --warning-color: #ffcc00;
 }
 
-/* System Preference Dark Mode */
-@media (prefers-color-scheme: light) {
-    :root {
-        --background-color: #f5f5f5;
-        --card-background: #ffffff;
-        --text-color: #121212;
-        --secondary-text: rgba(0, 0, 0, 0.7);
-    }
+/* Base styles with mobile-first approach */
+html {
+    -webkit-text-size-adjust: 100%;
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
 }
 
 body {
@@ -27,133 +23,282 @@ body {
     padding: 16px;
     background-color: var(--background-color);
     min-height: 100vh;
+    min-height: -webkit-fill-available; /* iOS height fix */
     color: var(--text-color);
-    transition: background-color 0.3s ease;
+    -webkit-overflow-scrolling: touch;
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
 }
 
-/* Previously defined styles remain the same... */
-
-/* New styles for added elements */
-.loading-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 16px;
+    width: 100%;
 }
 
-.offline-alert {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: var(--warning-color);
-    color: #000;
+.app-header {
     text-align: center;
-    padding: 8px;
-    font-size: 0.9rem;
-    z-index: 999;
-    animation: slideDown 0.3s ease-out;
+    margin-bottom: 24px;
 }
 
-.install-prompt {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--card-background);
-    padding: 16px 24px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+.header-content {
+    position: relative;
+    padding: 16px 0;
+}
+
+/* Auth Status Styles - Mobile First */
+.auth-status {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 8px;
+    margin-bottom: 16px;
+}
+
+/* User Info Styles */
+.user-info {
     display: flex;
     align-items: center;
-    gap: 16px;
-    z-index: 998;
-    animation: slideUp 0.3s ease-out;
+    gap: 8px;
+    background: var(--card-background);
+    padding: 12px 16px;
+    border-radius: 24px;
+    width: 100%;
+    max-width: 300px;
+    justify-content: center;
 }
 
-.button-text {
-    background: none;
-    border: none;
-    color: var(--secondary-text);
-    cursor: pointer;
-    padding: 8px 16px;
-    transition: color 0.3s ease;
+.user-photo {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
-.button-text:hover {
+#userName {
     color: var(--text-color);
+    font-size: 0.9rem;
+    margin: 0;
 }
 
-.error-message {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(255, 59, 48, 0.9);
-    color: white;
-    padding: 12px 24px;
+#userSignedIn {
+    display: none;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+#userSignedOut {
+    display: block;
+    width: 100%;
+}
+
+.app-header h1 {
+    font-size: 2em;
+    margin: 0;
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    padding: 0 16px;
+}
+
+.app-description {
+    color: var(--secondary-text);
+    margin-top: 8px;
+    font-size: 1em;
+    padding: 0 16px;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 24px;
+    padding: 0 16px;
+}
+
+.feature-card {
+    background: var(--card-background);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+}
+
+.feature-card h2 {
+    margin: 0 0 16px 0;
+    font-size: 1.3em;
+}
+
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+.button {
+    padding: 14px 20px;
+    border: none;
     border-radius: 8px;
-    z-index: 997;
-    animation: fadeIn 0.3s ease-out;
+    background-color: #2A2A2A;
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    font-size: 16px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
-/* Additional Animations */
-@keyframes slideDown {
-    from {
-        transform: translateY(-100%);
-    }
-    to {
-        transform: translateY(0);
-    }
+.button.primary {
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
 }
 
-@keyframes slideUp {
-    from {
-        transform: translateX(-50%) translateY(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(-50%) translateY(0);
-        opacity: 1;
-    }
+.button:hover {
+    background-color: #363636;
 }
 
-/* Enhanced Responsive Design */
-@media (max-width: 600px) {
+.button.primary:hover {
+    opacity: 0.9;
+}
+
+/* Sign Out Button Styles */
+#signOutButton {
+    background: rgba(255, 59, 48, 0.1);
+    color: #ff3b30;
+    border: 1px solid rgba(255, 59, 48, 0.2);
+    padding: 14px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+#signOutButton:hover {
+    background: rgba(255, 59, 48, 0.2);
+}
+
+/* User Profile Styles */
+.user-profile {
+    background: var(--card-background);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-direction: column;
+}
+
+/* Auth Button States */
+#authButton {
+    padding: 14px 20px;
+    font-size: 16px;
+    background: var(--card-background);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+#authButton:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+#authButton.signout {
+    background: rgba(255, 0, 0, 0.1);
+    border-color: rgba(255, 0, 0, 0.2);
+}
+
+#authButton.signout:hover {
+    background: rgba(255, 0, 0, 0.2);
+}
+
+/* Tablet and Desktop Styles */
+@media (min-width: 768px) {
     body {
-        padding: 12px;
+        padding: 24px;
+    }
+
+    .auth-status {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: auto;
+        flex-direction: row;
+        justify-content: flex-end;
+        margin-bottom: 0;
+    }
+
+    .user-info {
+        width: auto;
+        margin-right: 16px;
     }
 
     .app-header h1 {
-        font-size: 2em;
+        font-size: 2.5em;
     }
 
-    .feature-card {
-        padding: 16px;
+    .app-description {
+        font-size: 1.1em;
     }
 
-    .install-prompt {
-        width: 90%;
-        flex-direction: column;
-        gap: 8px;
-        text-align: center;
+    .features-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+        margin-top: 32px;
+    }
+
+    .button-group {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .button, #signOutButton, #authButton {
+        width: auto;
+    }
+
+    .user-profile {
+        flex-direction: row;
+    }
+
+    .user-photo {
+        width: 32px;
+        height: 32px;
     }
 }
 
-/* Print styles */
-@media print {
-    body {
-        background: white;
-        color: black;
+/* Large Desktop Styles */
+@media (min-width: 1200px) {
+    .container {
+        padding: 0;
     }
 
-    .button, .install-prompt, .offline-alert {
-        display: none;
+    .features-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Fix for iOS Safari notch */
+@supports (padding: max(0px)) {
+    .container {
+        padding-left: max(16px, env(safe-area-inset-left));
+        padding-right: max(16px, env(safe-area-inset-right));
+    }
+}
+
+/* Fix for iOS hover states */
+@media (hover: hover) {
+    .button:hover {
+        background-color: #363636;
     }
 }

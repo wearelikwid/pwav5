@@ -2,12 +2,24 @@
     "name": "16-Week Workout Program",
     "short_name": "Workout App",
     "description": "A progressive workout program with weekly exercises",
-    "start_url": "index.html",
-    "scope": ".",
+    "start_url": "/",
+    "id": "/",
+    "scope": "/",
     "display": "standalone",
+    "display_override": ["window-controls-overlay"],
     "background_color": "#1a1a1a",
     "theme_color": "#242424",
     "orientation": "portrait-primary",
+    "categories": ["fitness", "health", "lifestyle"],
+    "shortcuts": [
+        {
+            "name": "Start Workout",
+            "short_name": "Workout",
+            "description": "Begin your workout session",
+            "url": "/workout.html",
+            "icons": [{ "src": "/icons/icon-192x192.png", "sizes": "192x192" }]
+        }
+    ],
     "icons": [
         {
             "src": "icons/icon-192x192.png",
@@ -21,5 +33,15 @@
             "type": "image/png",
             "purpose": "any maskable"
         }
-    ]
+    ],
+    "screenshots": [
+        {
+            "src": "screenshots/workout-mobile.png",
+            "sizes": "1080x1920",
+            "type": "image/png",
+            "platform": "narrow",
+            "label": "Workout App on Mobile"
+        }
+    ],
+    "prefer_related_applications": false
 }

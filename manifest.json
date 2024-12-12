@@ -3,7 +3,7 @@
     "short_name": "El Forma",
     "description": "Create and manage your workouts",
     "start_url": "https://wearelikwid.github.io/pwav5/",
-    "id": "/",
+    "id": "https://wearelikwid.github.io/pwav5/",
     "scope": "https://wearelikwid.github.io/pwav5/",
     "display": "standalone",
     "display_override": ["window-controls-overlay"],

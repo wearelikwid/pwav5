@@ -2,69 +2,132 @@
 <html lang='en'>
 <head>
     <meta charset='UTF-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    <meta name='theme-color' content='#242424'>
-    <meta name='description' content='El Forma - Create and manage your workouts'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+    <meta name='theme-color' content='#242424' media="(prefers-color-scheme: dark)">
+    <meta name='theme-color' content='#ffffff' media="(prefers-color-scheme: light)">
+    <meta name='description' content='El Forma - Create and manage your workouts with personalized training plans'>
     <meta name='apple-mobile-web-app-capable' content='yes'>
     <meta name='mobile-web-app-capable' content='yes'>
-    <meta name='apple-mobile-web-app-status-bar-style' content='black'>
+    <meta name='apple-mobile-web-app-status-bar-style' content='default'>
     <meta name='apple-mobile-web-app-title' content='El Forma'>
+    
+    <!-- Security headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://www.gstatic.com https://*.firebaseio.com https://*.googleapis.com; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self' https://www.gstatic.com">
+    
     <title>El Forma</title>
 
+    <!-- Preconnect to required domains -->
+    <link rel="preconnect" href="https://www.gstatic.com">
+    <link rel="preconnect" href="https://firestore.googleapis.com">
+    
     <!-- Manifest -->
     <link rel='manifest' href='manifest.json'>
 
     <!-- Favicon and App Icons -->
-    <link rel='icon' type='image/png' href='icons/icon-192x192.png'>
+    <link rel='icon' type='image/png' sizes='192x192' href='icons/icon-192x192.png'>
     <link rel='apple-touch-icon' href='icons/icon-192x192.png'>
     <link rel='apple-touch-icon' sizes='192x192' href='icons/icon-192x192.png'>
     <link rel='apple-touch-icon' sizes='512x512' href='icons/icon-512x512.png'>
-
+    
+    <!-- Splash screen images for iOS -->
+    <link rel="apple-touch-startup-image" href="splash/apple-splash-2048-2732.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)">
+    <link rel="apple-touch-startup-image" href="splash/apple-splash-1668-2388.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)">
+    <link rel="apple-touch-startup-image" href="splash/apple-splash-1536-2048.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)">
+    <link rel="apple-touch-startup-image" href="splash/apple-splash-1125-2436.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)">
+    
     <!-- Styles -->
     <link rel='stylesheet' href='styles/main.css'>
+    
+    <!-- Preload critical assets -->
+    <link rel="preload" href="scripts/firebase-config.js" as="script">
+    <link rel="preload" href="scripts/auth.js" as="script">
+    <link rel="preload" href="styles/main.css" as="style">
 </head>
 <body>
     <div class='container'>
+        <!-- Loading state -->
+        <div id="loadingState" class="loading-overlay">
+            <div class="loading-spinner"></div>
+        </div>
+
+        <!-- Offline notification -->
+        <div id="offlineAlert" class="offline-alert" hidden>
+            You are currently offline. Some features may be limited.
+        </div>
+
         <header class='app-header'>
             <div class="header-content">
                 <h1>El Forma</h1>
                 <p class='app-description'>Create and manage your workouts</p>
-                <div id="authStatus" class="auth-status">
-                    <div id="userSignedIn">
+                <div id="authStatus" class="auth-status" aria-live="polite">
+                    <div id="userSignedIn" hidden>
                         <div class="user-info">
-                            <img id="userPhoto" class="user-photo" src="" alt="Profile photo">
+                            <img id="userPhoto" class="user-photo" src="icons/default-avatar.png" alt="Profile photo" loading="lazy">
                             <p id="userName"></p>
                         </div>
-                        <button id="signOutButton" class="button">Sign Out</button>
+                        <button id="signOutButton" class="button" aria-label="Sign out">Sign Out</button>
                     </div>
                     <div id="userSignedOut">
-                        <a href="auth.html" id="authButton" class="button">Sign In</a>
+                        <a href="auth.html" id="authButton" class="button" aria-label="Sign in">Sign In</a>
                     </div>
                 </div>
             </div>
         </header>
 
         <main class='features-grid'>
-            <section class='feature-card'>
-                <h2>Workouts</h2>
+            <section class='feature-card' aria-labelledby="workouts-heading">
+                <h2 id="workouts-heading">Workouts</h2>
                 <div class='button-group'>
-                    <a href='workouts.html' class='button'>View Workouts</a>
-                    <a href='create-workout.html' class='button primary'>Create Workout</a>
+                    <a href='workouts.html' class='button' aria-label="View existing workouts">View Workouts</a>
+                    <a href='create-workout.html' class='button primary' aria-label="Create new workout">Create Workout</a>
                 </div>
             </section>
         </main>
+
+        <!-- Install prompt -->
+        <div id="installPrompt" class="install-prompt" hidden>
+            <p>Install El Forma for a better experience</p>
+            <button id="installButton" class="button">Install</button>
+            <button id="dismissInstall" class="button-text">Maybe later</button>
+        </div>
     </div>
 
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <!-- Error message container -->
+    <div id="errorMessage" class="error-message" hidden></div>
 
-    <!-- Your Firebase Config -->
-    <script src="scripts/firebase-config.js"></script>
+    <!-- Firebase SDKs with specific versions -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js" defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js" defer></script>
 
-    <!-- Your App Scripts -->
-    <script src='scripts/auth.js'></script>
-    <script src='scripts/index.js'></script>
+    <!-- App Scripts -->
+    <script src="scripts/firebase-config.js" defer></script>
+    <script src="scripts/auth.js" defer></script>
+    <script src="scripts/index.js" defer></script>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registered');
+                    })
+                    .catch(error => {
+                        console.error('ServiceWorker registration failed:', error);
+                    });
+            });
+        }
+
+        // Offline/Online status handling
+        window.addEventListener('online', function() {
+            document.getElementById('offlineAlert').hidden = true;
+        });
+        window.addEventListener('offline', function() {
+            document.getElementById('offlineAlert').hidden = false;
+        });
+    </script>
 </body>
 </html>

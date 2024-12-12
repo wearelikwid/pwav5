@@ -1,3 +1,4 @@
+/* main.css */
 :root {
     --gradient-start: #7E57C2;
     --gradient-end: #2196F3;
@@ -5,6 +6,19 @@
     --card-background: #1E1E1E;
     --text-color: #ffffff;
     --secondary-text: rgba(255, 255, 255, 0.7);
+    --error-color: #ff3b30;
+    --success-color: #34c759;
+    --warning-color: #ffcc00;
+}
+
+/* System Preference Dark Mode */
+@media (prefers-color-scheme: light) {
+    :root {
+        --background-color: #f5f5f5;
+        --card-background: #ffffff;
+        --text-color: #121212;
+        --secondary-text: rgba(0, 0, 0, 0.7);
+    }
 }
 
 body {
@@ -14,190 +28,132 @@ body {
     background-color: var(--background-color);
     min-height: 100vh;
     color: var(--text-color);
+    transition: background-color 0.3s ease;
 }
 
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-}
+/* Previously defined styles remain the same... */
 
-.app-header {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.header-content {
-    position: relative;
-    padding: 20px 0;
-}
-
-/* Auth Status Styles */
-.auth-status {
-    position: absolute;
+/* New styles for added elements */
+.loading-overlay {
+    position: fixed;
     top: 0;
+    left: 0;
     right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
     display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 12px;
+    z-index: 1000;
+}
+
+.offline-alert {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--warning-color);
+    color: #000;
+    text-align: center;
     padding: 8px;
-}
-
-/* User Info Styles */
-.user-info {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--card-background);
-    padding: 8px 16px;
-    border-radius: 24px;
-    margin-right: 16px;
-}
-
-.user-photo {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-#userName {
-    color: var(--text-color);
     font-size: 0.9rem;
-    margin: 0;
+    z-index: 999;
+    animation: slideDown 0.3s ease-out;
 }
 
-#userSignedIn {
-    display: none;
+.install-prompt {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--card-background);
+    padding: 16px 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    display: flex;
     align-items: center;
     gap: 16px;
+    z-index: 998;
+    animation: slideUp 0.3s ease-out;
 }
 
-#userSignedOut {
-    display: block;
-}
-
-.app-header h1 {
-    font-size: 2.5em;
-    margin: 0;
-    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.app-description {
-    color: var(--secondary-text);
-    margin-top: 8px;
-    font-size: 1.1em;
-}
-
-.features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 24px;
-    margin-top: 32px;
-}
-
-.feature-card {
-    background: var(--card-background);
-    border-radius: 12px;
-    padding: 24px;
-    text-align: center;
-}
-
-.feature-card h2 {
-    margin: 0 0 20px 0;
-    font-size: 1.5em;
-}
-
-.button-group {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.button {
-    padding: 12px 20px;
+.button-text {
+    background: none;
     border: none;
-    border-radius: 8px;
-    background-color: #2A2A2A;
+    color: var(--secondary-text);
+    cursor: pointer;
+    padding: 8px 16px;
+    transition: color 0.3s ease;
+}
+
+.button-text:hover {
     color: var(--text-color);
-    text-decoration: none;
-    font-weight: 500;
-    transition: background-color 0.3s ease;
-    cursor: pointer;
-    display: inline-block;
 }
 
-.button.primary {
-    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
-}
-
-.button:hover {
-    background-color: #363636;
-}
-
-.button.primary:hover {
-    opacity: 0.9;
-}
-
-/* Sign Out Button Styles */
-#signOutButton {
-    background: rgba(255, 59, 48, 0.1);
-    color: #ff3b30;
-    border: 1px solid rgba(255, 59, 48, 0.2);
-    padding: 8px 16px;
+.error-message {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 59, 48, 0.9);
+    color: white;
+    padding: 12px 24px;
     border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    z-index: 997;
+    animation: fadeIn 0.3s ease-out;
 }
 
-#signOutButton:hover {
-    background: rgba(255, 59, 48, 0.2);
-}
-
-/* User Profile Styles */
-.user-profile {
-    background: var(--card-background);
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-/* Auth Button States */
-#authButton {
-    padding: 8px 16px;
-    font-size: 0.9rem;
-    background: var(--card-background);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
-}
-
-#authButton:hover {
-    background: rgba(255, 255, 255, 0.1);
-}
-
-#authButton.signout {
-    background: rgba(255, 0, 0, 0.1);
-    border-color: rgba(255, 0, 0, 0.2);
-}
-
-#authButton.signout:hover {
-    background: rgba(255, 0, 0, 0.2);
-}
-
-/* Responsive adjustments */
-@media (max-width: 600px) {
-    .auth-status {
-        position: static;
-        justify-content: center;
-        margin-top: 16px;
+/* Additional Animations */
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
     }
-    
-    .user-info {
-        margin-right: 0;
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateX(-50%) translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Enhanced Responsive Design */
+@media (max-width: 600px) {
+    body {
+        padding: 12px;
+    }
+
+    .app-header h1 {
+        font-size: 2em;
+    }
+
+    .feature-card {
+        padding: 16px;
+    }
+
+    .install-prompt {
+        width: 90%;
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
+}
+
+/* Print styles */
+@media print {
+    body {
+        background: white;
+        color: black;
+    }
+
+    .button, .install-prompt, .offline-alert {
+        display: none;
     }
 }

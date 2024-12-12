@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     while (!window.firebase || !firebase.app()) {
         await new Promise(resolve => setTimeout(resolve, 100));
     }
+
     // Get DOM elements - auth page elements
     const googleSignInButton = document.getElementById('googleSignIn');
     const userDetailsDiv = document.getElementById('userDetails');
@@ -10,6 +11,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const userNameP = document.getElementById('userName');
     const userEmailP = document.getElementById('userEmail');
     const signOutButton = document.getElementById('signOut');
+    const errorMessageDiv = document.getElementById('errorMessage');
 
     // Get DOM elements - landing page elements
     const authStatus = document.getElementById('authStatus');
@@ -25,6 +27,29 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Check which page we're on
     const isAuthPage = window.location.pathname.includes('auth.html');
     const isIndexPage = window.location.pathname.includes('index.html') || window.location.pathname === '/';
+
+    // Check if running as standalone PWA
+    function isRunningAsStandalone() {
+        return (window.matchMedia('(display-mode: standalone)').matches) ||
+               (window.navigator.standalone) ||
+               document.referrer.includes('android-app://');
+    }
+
+    // Check if running on iOS
+    function isIOS() {
+        return /iPhone|iPad|iPod/.test(navigator.userAgent);
+    }
+
+    // Show error message
+    function showError(message) {
+        if (errorMessageDiv) {
+            errorMessageDiv.textContent = message;
+            errorMessageDiv.style.display = 'block';
+            setTimeout(() => {
+                errorMessageDiv.style.display = 'none';
+            }, 5000);
+        }
+    }
 
     // Ensure proper initial display states
     function updateDisplayStates(user) {
@@ -53,8 +78,18 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Google Sign In
     async function signInWithGoogle() {
         try {
-            const result = await firebase.auth().signInWithPopup(provider);
-            if (result.user) {
+            let result;
+            const isIOSStandalone = isIOS() && isRunningAsStandalone();
+
+            if (isIOSStandalone) {
+                // Use redirect for iOS PWA
+                await firebase.auth().signInWithRedirect(provider);
+            } else {
+                // Use popup for all other cases
+                result = await firebase.auth().signInWithPopup(provider);
+            }
+
+            if (result?.user) {
                 const userData = {
                     uid: result.user.uid,
                     email: result.user.email,
@@ -69,7 +104,16 @@ document.addEventListener('DOMContentLoaded', async function() {
             }
         } catch (error) {
             console.error("Error during sign in:", error);
-            alert("Error signing in: " + error.message);
+            if (error.code === 'auth/popup-blocked' || error.code === 'auth/popup-closed-by-user') {
+                // If popup fails, fall back to redirect
+                try {
+                    await firebase.auth().signInWithRedirect(provider);
+                } catch (redirectError) {
+                    showError("Error signing in: " + redirectError.message);
+                }
+            } else {
+                showError("Error signing in: " + error.message);
+            }
         }
     }
 
@@ -97,6 +141,26 @@ document.addEventListener('DOMContentLoaded', async function() {
     if (mainSignOutButton) {
         mainSignOutButton.addEventListener('click', handleSignOut);
     }
+
+    // Handle redirect result
+    firebase.auth().getRedirectResult().then((result) => {
+        if (result.user) {
+            const userData = {
+                uid: result.user.uid,
+                email: result.user.email,
+                displayName: result.user.displayName,
+                photoURL: result.user.photoURL
+            };
+            localStorage.setItem('user', JSON.stringify(userData));
+            
+            if (isAuthPage) {
+                window.location.replace('index.html');
+            }
+        }
+    }).catch((error) => {
+        console.error('Redirect error:', error);
+        showError("Error signing in: " + error.message);
+    });
 
     // Set initial states
     const currentUser = firebase.auth().currentUser;

@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', async function() {
     // Wait for Firebase to initialize
     while (!window.firebase || !firebase.app()) {
@@ -78,42 +79,11 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Google Sign In
     async function signInWithGoogle() {
         try {
-            let result;
-            const isIOSStandalone = isIOS() && isRunningAsStandalone();
-
-            if (isIOSStandalone) {
-                // Use redirect for iOS PWA
-                await firebase.auth().signInWithRedirect(provider);
-            } else {
-                // Use popup for all other cases
-                result = await firebase.auth().signInWithPopup(provider);
-            }
-
-            if (result?.user) {
-                const userData = {
-                    uid: result.user.uid,
-                    email: result.user.email,
-                    displayName: result.user.displayName,
-                    photoURL: result.user.photoURL
-                };
-                localStorage.setItem('user', JSON.stringify(userData));
-                
-                if (isAuthPage) {
-                    window.location.replace('index.html');
-                }
-            }
+            // Always use redirect for better PWA compatibility
+            await firebase.auth().signInWithRedirect(provider);
         } catch (error) {
             console.error("Error during sign in:", error);
-            if (error.code === 'auth/popup-blocked' || error.code === 'auth/popup-closed-by-user') {
-                // If popup fails, fall back to redirect
-                try {
-                    await firebase.auth().signInWithRedirect(provider);
-                } catch (redirectError) {
-                    showError("Error signing in: " + redirectError.message);
-                }
-            } else {
-                showError("Error signing in: " + error.message);
-            }
+            showError("Error signing in: " + error.message);
         }
     }
 

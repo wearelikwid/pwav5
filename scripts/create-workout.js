@@ -171,7 +171,8 @@ function getSectionsData() {
             name: exercise.querySelector('.exercise-name').value.trim(),
             rounds: parseInt(exercise.querySelector('.exercise-rounds').value) || 0,
             reps: parseInt(exercise.querySelector('.exercise-reps').value) || 0,
-            notes: exercise.querySelector('.exercise-notes')?.value?.trim() || ''
+            notes: exercise.querySelector('.exercise-notes')?.value?.trim() || '',
+            tutorial: exercise.querySelector('.exercise-tutorial')?.value?.trim() || ''
         })).filter(exercise => exercise.name)
     }));
 }

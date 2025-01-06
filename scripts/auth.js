@@ -79,11 +79,30 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Google Sign In
     async function signInWithGoogle() {
         try {
-            // Always use redirect for better PWA compatibility
+            // Try redirect method first for all platforms
             await firebase.auth().signInWithRedirect(provider);
         } catch (error) {
-            console.error("Error during sign in:", error);
-            showError("Error signing in: " + error.message);
+            console.error("Error during redirect sign in:", error);
+            try {
+                // Fallback to popup only if redirect fails
+                const result = await firebase.auth().signInWithPopup(provider);
+                if (result?.user) {
+                    const userData = {
+                        uid: result.user.uid,
+                        email: result.user.email,
+                        displayName: result.user.displayName,
+                        photoURL: result.user.photoURL
+                    };
+                    localStorage.setItem('user', JSON.stringify(userData));
+                    
+                    if (isAuthPage) {
+                        window.location.replace('index.html');
+                    }
+                }
+            } catch (popupError) {
+                console.error("Popup sign in failed:", popupError);
+                showError("Error signing in. Please try again.");
+            }
         }
     }
 

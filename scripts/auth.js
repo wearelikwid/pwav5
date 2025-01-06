@@ -62,10 +62,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                     photoURL: result.user.photoURL
                 };
                 localStorage.setItem('user', JSON.stringify(userData));
-                
-                if (isAuthPage) {
-                    window.location.replace('index.html');
-                }
+                window.location.replace('index.html');
             }
         } catch (error) {
             console.error("Error during sign in:", error);

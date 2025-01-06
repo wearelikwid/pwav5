@@ -1,10 +1,8 @@
-
 document.addEventListener('DOMContentLoaded', async function() {
     // Wait for Firebase to initialize
     while (!window.firebase || !firebase.app()) {
         await new Promise(resolve => setTimeout(resolve, 100));
     }
-
     // Get DOM elements - auth page elements
     const googleSignInButton = document.getElementById('googleSignIn');
     const userDetailsDiv = document.getElementById('userDetails');
@@ -12,7 +10,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     const userNameP = document.getElementById('userName');
     const userEmailP = document.getElementById('userEmail');
     const signOutButton = document.getElementById('signOut');
-    const errorMessageDiv = document.getElementById('errorMessage');
 
     // Get DOM elements - landing page elements
     const authStatus = document.getElementById('authStatus');
@@ -28,29 +25,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Check which page we're on
     const isAuthPage = window.location.pathname.includes('auth.html');
     const isIndexPage = window.location.pathname.includes('index.html') || window.location.pathname === '/';
-
-    // Check if running as standalone PWA
-    function isRunningAsStandalone() {
-        return (window.matchMedia('(display-mode: standalone)').matches) ||
-               (window.navigator.standalone) ||
-               document.referrer.includes('android-app://');
-    }
-
-    // Check if running on iOS
-    function isIOS() {
-        return /iPhone|iPad|iPod/.test(navigator.userAgent);
-    }
-
-    // Show error message
-    function showError(message) {
-        if (errorMessageDiv) {
-            errorMessageDiv.textContent = message;
-            errorMessageDiv.style.display = 'block';
-            setTimeout(() => {
-                errorMessageDiv.style.display = 'none';
-            }, 5000);
-        }
-    }
 
     // Ensure proper initial display states
     function updateDisplayStates(user) {
@@ -79,14 +53,23 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Google Sign In
     async function signInWithGoogle() {
         try {
-            // Store the current page URL before sign in
-            sessionStorage.setItem('redirectUrl', window.location.href);
-            
-            // Always use redirect for consistency across platforms
-            await firebase.auth().signInWithRedirect(provider);
+            const result = await firebase.auth().signInWithPopup(provider);
+            if (result.user) {
+                const userData = {
+                    uid: result.user.uid,
+                    email: result.user.email,
+                    displayName: result.user.displayName,
+                    photoURL: result.user.photoURL
+                };
+                localStorage.setItem('user', JSON.stringify(userData));
+                
+                if (isAuthPage) {
+                    window.location.replace('index.html');
+                }
+            }
         } catch (error) {
             console.error("Error during sign in:", error);
-            showError("Error signing in. Please try again.");
+            alert("Error signing in: " + error.message);
         }
     }
 
@@ -114,31 +97,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     if (mainSignOutButton) {
         mainSignOutButton.addEventListener('click', handleSignOut);
     }
-
-    // Handle redirect result
-    firebase.auth().getRedirectResult()
-        .then((result) => {
-            if (result.user) {
-                const userData = {
-                    uid: result.user.uid,
-                    email: result.user.email,
-                    displayName: result.user.displayName,
-                    photoURL: result.user.photoURL
-                };
-                localStorage.setItem('user', JSON.stringify(userData));
-
-                // Get stored redirect URL
-                const redirectUrl = sessionStorage.getItem('redirectUrl') || 'index.html';
-                sessionStorage.removeItem('redirectUrl');
-
-                // Redirect to stored URL or index
-                window.location.href = redirectUrl;
-            }
-        })
-        .catch((error) => {
-            console.error('Redirect error:', error);
-            showError("Error signing in: " + error.message);
-        });
 
     // Set initial states
     const currentUser = firebase.auth().currentUser;

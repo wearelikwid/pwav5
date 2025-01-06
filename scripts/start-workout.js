@@ -111,6 +111,15 @@ function createExerciseElement(exercise) {
     } else {
         notesElement.style.display = 'none';
     }
+
+    // Set tutorial link if it exists
+    const tutorialElement = exerciseElement.querySelector('.tutorial-link');
+    if (exercise.tutorial) {
+        tutorialElement.href = exercise.tutorial;
+        tutorialElement.style.display = 'block';
+    } else {
+        tutorialElement.style.display = 'none';
+    }
     
     // Set reps and rounds
     const repsElement = exerciseElement.querySelector('.reps');

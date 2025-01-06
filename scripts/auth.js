@@ -79,30 +79,14 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Google Sign In
     async function signInWithGoogle() {
         try {
-            // Try redirect method first for all platforms
+            // Store the current page URL before sign in
+            sessionStorage.setItem('redirectUrl', window.location.href);
+            
+            // Always use redirect for consistency across platforms
             await firebase.auth().signInWithRedirect(provider);
         } catch (error) {
-            console.error("Error during redirect sign in:", error);
-            try {
-                // Fallback to popup only if redirect fails
-                const result = await firebase.auth().signInWithPopup(provider);
-                if (result?.user) {
-                    const userData = {
-                        uid: result.user.uid,
-                        email: result.user.email,
-                        displayName: result.user.displayName,
-                        photoURL: result.user.photoURL
-                    };
-                    localStorage.setItem('user', JSON.stringify(userData));
-                    
-                    if (isAuthPage) {
-                        window.location.replace('index.html');
-                    }
-                }
-            } catch (popupError) {
-                console.error("Popup sign in failed:", popupError);
-                showError("Error signing in. Please try again.");
-            }
+            console.error("Error during sign in:", error);
+            showError("Error signing in. Please try again.");
         }
     }
 
@@ -132,24 +116,29 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
 
     // Handle redirect result
-    firebase.auth().getRedirectResult().then((result) => {
-        if (result.user) {
-            const userData = {
-                uid: result.user.uid,
-                email: result.user.email,
-                displayName: result.user.displayName,
-                photoURL: result.user.photoURL
-            };
-            localStorage.setItem('user', JSON.stringify(userData));
-            
-            if (isAuthPage) {
-                window.location.replace('index.html');
+    firebase.auth().getRedirectResult()
+        .then((result) => {
+            if (result.user) {
+                const userData = {
+                    uid: result.user.uid,
+                    email: result.user.email,
+                    displayName: result.user.displayName,
+                    photoURL: result.user.photoURL
+                };
+                localStorage.setItem('user', JSON.stringify(userData));
+
+                // Get stored redirect URL
+                const redirectUrl = sessionStorage.getItem('redirectUrl') || 'index.html';
+                sessionStorage.removeItem('redirectUrl');
+
+                // Redirect to stored URL or index
+                window.location.href = redirectUrl;
             }
-        }
-    }).catch((error) => {
-        console.error('Redirect error:', error);
-        showError("Error signing in: " + error.message);
-    });
+        })
+        .catch((error) => {
+            console.error('Redirect error:', error);
+            showError("Error signing in: " + error.message);
+        });
 
     // Set initial states
     const currentUser = firebase.auth().currentUser;

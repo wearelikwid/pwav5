@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', async function() {
     // Wait for Firebase to initialize
     while (!window.firebase || !firebase.app()) {

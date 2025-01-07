@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', async function() {
     // Wait for Firebase to initialize
     while (!window.firebase || !firebase.app()) {
@@ -53,22 +54,47 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Google Sign In
     async function signInWithGoogle() {
         try {
-            const result = await firebase.auth().signInWithPopup(provider);
-            if (result.user) {
-                const userData = {
-                    uid: result.user.uid,
-                    email: result.user.email,
-                    displayName: result.user.displayName,
-                    photoURL: result.user.photoURL
-                };
-                localStorage.setItem('user', JSON.stringify(userData));
-                window.location.replace('index.html');
+            // Check if running as PWA
+            const isPWA = window.matchMedia('(display-mode: standalone)').matches;
+            
+            if (isPWA) {
+                // Use redirect for PWA
+                await firebase.auth().signInWithRedirect(provider);
+            } else {
+                // Use popup for browser
+                const result = await firebase.auth().signInWithPopup(provider);
+                if (result.user) {
+                    const userData = {
+                        uid: result.user.uid,
+                        email: result.user.email,
+                        displayName: result.user.displayName,
+                        photoURL: result.user.photoURL
+                    };
+                    localStorage.setItem('user', JSON.stringify(userData));
+                    window.location.replace('index.html');
+                }
             }
         } catch (error) {
             console.error("Error during sign in:", error);
             alert("Error signing in: " + error.message);
         }
     }
+
+    // Handle redirect result
+    firebase.auth().getRedirectResult().then((result) => {
+        if (result.user) {
+            const userData = {
+                uid: result.user.uid,
+                email: result.user.email,
+                displayName: result.user.displayName,
+                photoURL: result.user.photoURL
+            };
+            localStorage.setItem('user', JSON.stringify(userData));
+            window.location.replace('index.html');
+        }
+    }).catch((error) => {
+        console.error("Redirect error:", error);
+    });
 
     // Sign Out
     async function handleSignOut() {

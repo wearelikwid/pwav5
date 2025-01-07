@@ -56,32 +56,34 @@ document.addEventListener('DOMContentLoaded', async function() {
         try {
             // Check if running as PWA
             const isPWA = window.matchMedia('(display-mode: standalone)').matches;
-            
+
+            // First set persistence to LOCAL
+            await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+
             if (isPWA) {
                 // Use redirect for PWA
                 await firebase.auth().signInWithRedirect(provider);
             } else {
                 // Use popup for browser
                 const result = await firebase.auth().signInWithPopup(provider);
-                if (result.user) {
-                    const userData = {
-                        uid: result.user.uid,
-                        email: result.user.email,
-                        displayName: result.user.displayName,
-                        photoURL: result.user.photoURL
-                    };
-                    localStorage.setItem('user', JSON.stringify(userData));
-                    window.location.replace('index.html');
-                }
+                handleAuthResult(result);
             }
         } catch (error) {
             console.error("Error during sign in:", error);
-            alert("Error signing in: " + error.message);
+            if (error.code === 'auth/popup-blocked') {
+                try {
+                    await firebase.auth().signInWithRedirect(provider);
+                } catch (redirectError) {
+                    console.error("Redirect error:", redirectError);
+                    alert("Error signing in: " + redirectError.message);
+                }
+            } else {
+                alert("Error signing in: " + error.message);
+            }
         }
     }
 
-    // Handle redirect result
-    firebase.auth().getRedirectResult().then((result) => {
+    function handleAuthResult(result) {
         if (result.user) {
             const userData = {
                 uid: result.user.uid,
@@ -90,10 +92,20 @@ document.addEventListener('DOMContentLoaded', async function() {
                 photoURL: result.user.photoURL
             };
             localStorage.setItem('user', JSON.stringify(userData));
-            window.location.replace('index.html');
+            window.location.href = 'index.html';
+        }
+    }
+
+    // Handle redirect result immediately
+    firebase.auth().getRedirectResult().then((result) => {
+        if (result.user) {
+            handleAuthResult(result);
         }
     }).catch((error) => {
         console.error("Redirect error:", error);
+        if (error.code !== 'auth/credential-already-in-use') {
+            alert("Authentication error: " + error.message);
+        }
     });
 
     // Sign Out
@@ -101,10 +113,10 @@ document.addEventListener('DOMContentLoaded', async function() {
         try {
             localStorage.clear();
             await firebase.auth().signOut();
-            window.location.replace('index.html');
+            window.location.href = 'index.html';
         } catch (error) {
             console.error('Sign out error:', error);
-            window.location.replace('index.html');
+            window.location.href = 'index.html';
         }
     }
 
